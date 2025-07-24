@@ -29,12 +29,24 @@ const Auth = () => {
   // Check if user is coming from password reset email
   useEffect(() => {
     const checkForPasswordReset = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
+      // Check URL parameters first
+      const urlParams = new URLSearchParams(window.location.search);
+      const hashParams = new URLSearchParams(window.location.hash.substring(1));
       
-      // Check if this is a password reset session by looking for the recovery event
-      if (session && session.user && window.location.href.includes('type=recovery')) {
+      const type = urlParams.get('type') || hashParams.get('type');
+      const accessToken = urlParams.get('access_token') || hashParams.get('access_token');
+      
+      console.log('Password reset check:', { type, hasAccessToken: !!accessToken, url: window.location.href });
+      
+      if (type === 'recovery' && accessToken) {
+        console.log('Password reset detected');
         setIsResetPassword(true);
-        setEmail(session.user.email || '');
+        
+        // Get session to get user email
+        const { data: { session } } = await supabase.auth.getSession();
+        if (session?.user?.email) {
+          setEmail(session.user.email);
+        }
       }
     };
 
@@ -105,8 +117,8 @@ const Auth = () => {
     }
   };
 
-  // If user is authenticated and this is a password reset, show the reset form
-  if (isResetPassword && user) {
+  // If this is a password reset, show the reset form (don't wait for user from context)
+  if (isResetPassword) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-background to-secondary/20 flex items-center justify-center p-4">
         <div className="w-full max-w-md">
