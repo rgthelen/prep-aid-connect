@@ -239,9 +239,9 @@ export const EmergencyMap = ({ onEmergencyCreated, existingEmergencies }: Emerge
   };
 
   return (
-    <div className="relative w-full h-[600px]">
+    <div className="relative w-full h-[600px] overflow-hidden">
       {/* Map Container */}
-      <div ref={mapContainer} className="absolute inset-0 rounded-lg" />
+      <div ref={mapContainer} className="absolute inset-0 w-full h-full rounded-lg" />
       
       {/* Drawing Controls */}
       <div className="absolute top-4 right-4 z-10 space-y-2">
