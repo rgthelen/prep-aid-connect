@@ -14,7 +14,249 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      emergencies: {
+        Row: {
+          created_at: string
+          declared_by: string
+          description: string | null
+          emergency_type: string
+          id: string
+          is_active: boolean | null
+          radius_miles: number
+          state: string
+          title: string
+          updated_at: string
+          zipcode: string
+        }
+        Insert: {
+          created_at?: string
+          declared_by: string
+          description?: string | null
+          emergency_type: string
+          id?: string
+          is_active?: boolean | null
+          radius_miles?: number
+          state: string
+          title: string
+          updated_at?: string
+          zipcode: string
+        }
+        Update: {
+          created_at?: string
+          declared_by?: string
+          description?: string | null
+          emergency_type?: string
+          id?: string
+          is_active?: boolean | null
+          radius_miles?: number
+          state?: string
+          title?: string
+          updated_at?: string
+          zipcode?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "emergencies_declared_by_fkey"
+            columns: ["declared_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      pepr_members: {
+        Row: {
+          age: number | null
+          created_at: string
+          id: string
+          medications: string | null
+          name: string
+          pepr_id: string
+          relationship: string | null
+          special_needs: string | null
+        }
+        Insert: {
+          age?: number | null
+          created_at?: string
+          id?: string
+          medications?: string | null
+          name: string
+          pepr_id: string
+          relationship?: string | null
+          special_needs?: string | null
+        }
+        Update: {
+          age?: number | null
+          created_at?: string
+          id?: string
+          medications?: string | null
+          name?: string
+          pepr_id?: string
+          relationship?: string | null
+          special_needs?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pepr_members_pepr_id_fkey"
+            columns: ["pepr_id"]
+            isOneToOne: false
+            referencedRelation: "peprs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      peprs: {
+        Row: {
+          address: string
+          city: string
+          country: string | null
+          created_at: string
+          emergency_contacts: string | null
+          id: string
+          medications: string | null
+          name: string
+          owner_id: string
+          pets: string | null
+          special_needs: string | null
+          state: string
+          updated_at: string
+          zipcode: string
+        }
+        Insert: {
+          address: string
+          city: string
+          country?: string | null
+          created_at?: string
+          emergency_contacts?: string | null
+          id?: string
+          medications?: string | null
+          name: string
+          owner_id: string
+          pets?: string | null
+          special_needs?: string | null
+          state: string
+          updated_at?: string
+          zipcode: string
+        }
+        Update: {
+          address?: string
+          city?: string
+          country?: string | null
+          created_at?: string
+          emergency_contacts?: string | null
+          id?: string
+          medications?: string | null
+          name?: string
+          owner_id?: string
+          pets?: string | null
+          special_needs?: string | null
+          state?: string
+          updated_at?: string
+          zipcode?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "peprs_owner_id_fkey"
+            columns: ["owner_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          address: string | null
+          city: string | null
+          country: string | null
+          created_at: string
+          email: string
+          full_name: string | null
+          id: string
+          is_admin: boolean | null
+          phone: string | null
+          state: string | null
+          updated_at: string
+          user_id: string
+          zipcode: string | null
+        }
+        Insert: {
+          address?: string | null
+          city?: string | null
+          country?: string | null
+          created_at?: string
+          email: string
+          full_name?: string | null
+          id?: string
+          is_admin?: boolean | null
+          phone?: string | null
+          state?: string | null
+          updated_at?: string
+          user_id: string
+          zipcode?: string | null
+        }
+        Update: {
+          address?: string | null
+          city?: string | null
+          country?: string | null
+          created_at?: string
+          email?: string
+          full_name?: string | null
+          id?: string
+          is_admin?: boolean | null
+          phone?: string | null
+          state?: string | null
+          updated_at?: string
+          user_id?: string
+          zipcode?: string | null
+        }
+        Relationships: []
+      }
+      user_emergency_status: {
+        Row: {
+          emergency_id: string
+          id: string
+          location: string | null
+          notes: string | null
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          emergency_id: string
+          id?: string
+          location?: string | null
+          notes?: string | null
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          emergency_id?: string
+          id?: string
+          location?: string | null
+          notes?: string | null
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_emergency_status_emergency_id_fkey"
+            columns: ["emergency_id"]
+            isOneToOne: false
+            referencedRelation: "emergencies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "user_emergency_status_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
