@@ -124,6 +124,21 @@ const Admin = () => {
     }
   };
 
+  const toggleUserAdmin = async (userId: string, currentStatus: boolean) => {
+    try {
+      const { error } = await supabase
+        .from('profiles')
+        .update({ is_admin: !currentStatus })
+        .eq('id', userId);
+
+      if (error) throw error;
+      fetchUsers();
+      setSuccess(`User ${!currentStatus ? 'promoted to' : 'removed from'} admin successfully`);
+    } catch (err: any) {
+      setError('Failed to update user admin status');
+    }
+  };
+
   const toggleEmergencyStatus = async (emergencyId: string, currentStatus: boolean) => {
     try {
       const { error } = await supabase
@@ -264,33 +279,42 @@ const Admin = () => {
             </CardContent>
           </Card>
 
-          {/* Users Overview */}
+          {/* User Management */}
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Users className="h-5 w-5 text-primary" />
-                Registered Users ({users.length})
+                User Management ({users.length} users)
               </CardTitle>
               <CardDescription>
-                Overview of users in the system
+                Manage user accounts and admin permissions
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="space-y-4 max-h-96 overflow-y-auto">
+              <div className="space-y-3 max-h-96 overflow-y-auto">
                 {users.map((user) => (
                   <div key={user.id} className="flex items-center justify-between p-3 border rounded-lg">
-                    <div>
+                    <div className="flex-1">
                       <p className="font-medium">{user.full_name || user.email}</p>
                       <p className="text-sm text-muted-foreground">
                         {user.city && user.state ? `${user.city}, ${user.state}` : 'No location set'}
                         {user.zipcode && ` • ${user.zipcode}`}
                       </p>
                     </div>
-                    {user.is_admin && (
-                      <span className="px-2 py-1 bg-primary text-primary-foreground text-xs rounded">
-                        Admin
-                      </span>
-                    )}
+                    <div className="flex items-center gap-2">
+                      {user.is_admin && (
+                        <span className="px-2 py-1 bg-primary text-primary-foreground text-xs rounded">
+                          Admin
+                        </span>
+                      )}
+                      <Button
+                        variant={user.is_admin ? "destructive" : "outline"}
+                        size="sm"
+                        onClick={() => toggleUserAdmin(user.id, user.is_admin)}
+                      >
+                        {user.is_admin ? 'Remove Admin' : 'Make Admin'}
+                      </Button>
+                    </div>
                   </div>
                 ))}
               </div>
