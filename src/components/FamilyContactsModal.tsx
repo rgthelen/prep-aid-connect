@@ -5,7 +5,9 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } f
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Users, Phone, MapPin, Heart } from 'lucide-react';
+import { Users, Phone, MapPin, Heart, Plus, Edit } from 'lucide-react';
+import { AddFamilyMemberForm } from './AddFamilyMemberForm';
+import { AddEmergencyContactForm } from './AddEmergencyContactForm';
 
 interface FamilyMember {
   id: string;
@@ -36,6 +38,8 @@ export const FamilyContactsModal = ({ open, onOpenChange }: FamilyContactsModalP
   const [familyMembers, setFamilyMembers] = useState<FamilyMember[]>([]);
   const [peprs, setPeprs] = useState<PEPR[]>([]);
   const [loading, setLoading] = useState(true);
+  const [showAddFamilyForm, setShowAddFamilyForm] = useState(false);
+  const [showAddContactForm, setShowAddContactForm] = useState(false);
 
   useEffect(() => {
     if (open && profile) {
@@ -107,12 +111,48 @@ export const FamilyContactsModal = ({ open, onOpenChange }: FamilyContactsModalP
           </div>
         ) : (
           <div className="space-y-6">
-            {/* Family Members */}
-            <div>
-              <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-                <Heart className="h-4 w-4 text-red-500" />
-                Family Members ({familyMembers.length})
-              </h3>
+            {/* Add Family Member Form */}
+            {showAddFamilyForm && (
+              <AddFamilyMemberForm
+                peprs={peprs}
+                onSuccess={() => {
+                  setShowAddFamilyForm(false);
+                  fetchFamilyData();
+                }}
+                onCancel={() => setShowAddFamilyForm(false)}
+              />
+            )}
+
+            {/* Add Emergency Contact Form */}
+            {showAddContactForm && (
+              <AddEmergencyContactForm
+                peprs={peprs}
+                onSuccess={() => {
+                  setShowAddContactForm(false);
+                  fetchFamilyData();
+                }}
+                onCancel={() => setShowAddContactForm(false)}
+              />
+            )}
+
+            {!showAddFamilyForm && !showAddContactForm && (
+              <>
+                {/* Family Members */}
+                <div>
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="text-lg font-semibold flex items-center gap-2">
+                      <Heart className="h-4 w-4 text-red-500" />
+                      Family Members ({familyMembers.length})
+                    </h3>
+                    <Button 
+                      size="sm" 
+                      onClick={() => setShowAddFamilyForm(true)}
+                      className="flex items-center gap-2"
+                    >
+                      <Plus className="h-4 w-4" />
+                      Add Family Member
+                    </Button>
+                  </div>
               
               {familyMembers.length > 0 ? (
                 <div className="grid gap-3">
@@ -167,12 +207,22 @@ export const FamilyContactsModal = ({ open, onOpenChange }: FamilyContactsModalP
               )}
             </div>
 
-            {/* Emergency Contacts */}
-            <div>
-              <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-                <Phone className="h-4 w-4 text-green-600" />
-                Emergency Contacts
-              </h3>
+                {/* Emergency Contacts */}
+                <div>
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="text-lg font-semibold flex items-center gap-2">
+                      <Phone className="h-4 w-4 text-green-600" />
+                      Emergency Contacts
+                    </h3>
+                    <Button 
+                      size="sm" 
+                      onClick={() => setShowAddContactForm(true)}
+                      className="flex items-center gap-2"
+                    >
+                      <Plus className="h-4 w-4" />
+                      Add Contacts
+                    </Button>
+                  </div>
               
               <div className="grid gap-3">
                 {peprs.map((pepr) => (
@@ -211,8 +261,10 @@ export const FamilyContactsModal = ({ open, onOpenChange }: FamilyContactsModalP
                     </p>
                   </CardContent>
                 </Card>
-              )}
-            </div>
+                  )}
+                </div>
+              </>
+            )}
           </div>
         )}
 
