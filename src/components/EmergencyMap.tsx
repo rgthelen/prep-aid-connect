@@ -45,34 +45,56 @@ export const EmergencyMap = ({ onEmergencyCreated, existingEmergencies }: Emerge
   useEffect(() => {
     if (!mapContainer.current) return;
 
-    // Get Mapbox token from environment or use a placeholder
-    const mapboxToken = 'pk.eyJ1IjoidGVzdCIsImEiOiJjazl3cHNhbGYwMDFrM29xbGR6emt2M3VzIn0.test'; // This will be replaced with actual token
+    // Get Mapbox token from Supabase Edge Function
+    const initializeMap = async () => {
+      try {
+        const response = await fetch(`https://xlgbutxnfpkggwalxptj.supabase.co/functions/v1/get-mapbox-token`, {
+          headers: {
+            'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhsZ2J1dHhuZnBrZ2d3YWx4cHRqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTMzNzU0MTIsImV4cCI6MjA2ODk1MTQxMn0.XzKd7dgbGLrp-aOHBA6OSRl63yu4WeGrE_AE7GsLpJs`,
+          },
+        });
+        
+        if (!response.ok) {
+          throw new Error('Failed to fetch Mapbox token');
+        }
+        
+        const { token } = await response.json();
+        mapboxgl.accessToken = token;
     
-    mapboxgl.accessToken = mapboxToken;
-    
-    map.current = new mapboxgl.Map({
-      container: mapContainer.current,
-      style: 'mapbox://styles/mapbox/light-v11',
-      center: [-95.7129, 37.0902], // Center of US
-      zoom: 4,
-    });
+        map.current = new mapboxgl.Map({
+          container: mapContainer.current,
+          style: 'mapbox://styles/mapbox/light-v11',
+          center: [-95.7129, 37.0902], // Center of US
+          zoom: 4,
+        });
 
-    // Add geocoder for search
-    const geocoder = new MapboxGeocoder({
-      accessToken: mapboxToken,
-      mapboxgl: mapboxgl,
-      placeholder: 'Search for places, addresses, or zip codes',
-      bbox: [-125.0011, 20.7197, -66.9326, 49.5904], // US bounding box
-    });
+        // Add geocoder for search
+        const geocoder = new MapboxGeocoder({
+          accessToken: token,
+          mapboxgl: mapboxgl,
+          placeholder: 'Search for places, addresses, or zip codes',
+          bbox: [-125.0011, 20.7197, -66.9326, 49.5904], // US bounding box
+        });
 
-    map.current.addControl(geocoder, 'top-left');
-    map.current.addControl(new mapboxgl.NavigationControl(), 'top-right');
+        map.current.addControl(geocoder, 'top-left');
+        map.current.addControl(new mapboxgl.NavigationControl(), 'top-right');
 
-    // Load existing emergencies
-    map.current.on('load', () => {
-      loadExistingEmergencies();
-      setupDrawingHandlers();
-    });
+        // Load existing emergencies
+        map.current.on('load', () => {
+          loadExistingEmergencies();
+          setupDrawingHandlers();
+        });
+      } catch (error) {
+        console.error('Error initializing map:', error);
+        toast({
+          title: "Error",
+          description: "Failed to initialize map. Please check your configuration.",
+          variant: "destructive",
+        });
+      }
+    };
+
+    initializeMap();
 
     return () => {
       map.current?.remove();

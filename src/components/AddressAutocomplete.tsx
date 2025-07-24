@@ -55,8 +55,18 @@ export const AddressAutocomplete = ({
   const searchAddresses = async (query: string) => {
     setLoading(true);
     try {
-      // In production, this would use the actual Mapbox token from Supabase secrets
-      const mapboxToken = 'pk.eyJ1IjoidGVzdCIsImEiOiJjazl3cHNhbGYwMDFrM29xbGR6emt2M3VzIn0.test';
+      // Get Mapbox token from Supabase Edge Function
+      const tokenResponse = await fetch(`https://xlgbutxnfpkggwalxptj.supabase.co/functions/v1/get-mapbox-token`, {
+        headers: {
+          'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhsZ2J1dHhuZnBrZ2d3YWx4cHRqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTMzNzU0MTIsImV4cCI6MjA2ODk1MTQxMn0.XzKd7dgbGLrp-aOHBA6OSRl63yu4WeGrE_AE7GsLpJs`,
+        },
+      });
+      
+      if (!tokenResponse.ok) {
+        throw new Error('Failed to fetch Mapbox token');
+      }
+      
+      const { token: mapboxToken } = await tokenResponse.json();
       const response = await fetch(
         `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(query)}.json?access_token=${mapboxToken}&country=US&types=address,place,postcode&limit=5`
       );
