@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Shield, Menu } from "lucide-react";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -32,12 +33,16 @@ const Header = () => {
 
         {/* CTA Buttons */}
         <div className="hidden md:flex items-center gap-3">
-          <Button variant="outline" size="sm">
-            Admin Login
-          </Button>
-          <Button size="sm">
-            Create PEPR
-          </Button>
+          <Link to="/auth">
+            <Button variant="outline" size="sm">
+              Sign In
+            </Button>
+          </Link>
+          <Link to="/auth">
+            <Button size="sm">
+              Create PEPR
+            </Button>
+          </Link>
         </div>
 
         {/* Mobile Menu Toggle */}
@@ -65,12 +70,16 @@ const Header = () => {
               Contact
             </a>
             <div className="flex flex-col gap-2 pt-2 border-t border-border">
-              <Button variant="outline" size="sm">
-                Admin Login
-              </Button>
-              <Button size="sm">
-                Create PEPR
-              </Button>
+              <Link to="/auth">
+                <Button variant="outline" size="sm" className="w-full">
+                  Sign In
+                </Button>
+              </Link>
+              <Link to="/auth">
+                <Button size="sm" className="w-full">
+                  Create PEPR
+                </Button>
+              </Link>
             </div>
           </nav>
         </div>
