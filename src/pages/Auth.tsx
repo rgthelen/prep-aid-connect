@@ -71,9 +71,16 @@ const Auth = () => {
 
       if (error) throw error;
       
+      // Check if user is admin and redirect appropriately
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('is_admin')
+        .eq('user_id', (await supabase.auth.getUser()).data.user?.id)
+        .single();
+      
       setSuccess('Password updated successfully! Redirecting...');
       setTimeout(() => {
-        navigate('/');
+        navigate(profile?.is_admin ? '/admin' : '/dashboard');
       }, 2000);
     } catch (err: any) {
       setError(err.message || 'Failed to update password');
