@@ -204,6 +204,17 @@ export const EmergencyMap = ({ onEmergencyCreated, existingEmergencies }: Emerge
 
     setLoading(true);
     try {
+      // Get the current user's profile ID instead of auth user ID
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('id')
+        .eq('user_id', (await supabase.auth.getUser()).data.user?.id)
+        .single();
+      
+      if (!profile) {
+        throw new Error('User profile not found');
+      }
+
       // For now, we'll use a placeholder zipcode and state
       // In production, you'd reverse geocode the center point
       const { error } = await supabase.from('emergencies').insert({
@@ -213,7 +224,7 @@ export const EmergencyMap = ({ onEmergencyCreated, existingEmergencies }: Emerge
         zipcode: '00000', // Placeholder
         state: 'US', // Placeholder
         radius_miles: formData.radius_miles,
-        declared_by: (await supabase.auth.getUser()).data.user?.id
+        declared_by: profile.id
       });
 
       if (error) throw error;
