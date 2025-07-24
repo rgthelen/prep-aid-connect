@@ -28,16 +28,18 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   return <>{children}</>;
 };
 
-// Public Route Component (redirect to dashboard if logged in)
+// Public Route Component (redirect to appropriate page if logged in)
 const PublicRoute = ({ children }: { children: React.ReactNode }) => {
-  const { user, loading } = useAuth();
+  const { user, profile, loading } = useAuth();
   
   if (loading) {
     return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
   }
   
   if (user) {
-    return <Navigate to="/dashboard" replace />;
+    // Redirect admin users to admin panel, regular users to dashboard
+    const redirectPath = profile?.is_admin ? "/admin" : "/dashboard";
+    return <Navigate to={redirectPath} replace />;
   }
   
   return <>{children}</>;
