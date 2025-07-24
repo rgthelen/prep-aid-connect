@@ -5,6 +5,8 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Shield, Plus, Users, AlertTriangle, FileText, MapPin, Calendar } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { FamilyContactsModal } from '@/components/FamilyContactsModal';
+import { EmergencyStatusModal } from '@/components/EmergencyStatusModal';
 
 interface PEPR {
   id: string;
@@ -21,6 +23,8 @@ const Dashboard = () => {
   const { profile, signOut } = useAuth();
   const [peprs, setPeprs] = useState<PEPR[]>([]);
   const [loading, setLoading] = useState(true);
+  const [familyContactsOpen, setFamilyContactsOpen] = useState(false);
+  const [emergencyStatusOpen, setEmergencyStatusOpen] = useState(false);
 
   useEffect(() => {
     fetchPeprs();
@@ -190,7 +194,11 @@ const Dashboard = () => {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <Button variant="outline" className="w-full">
+              <Button 
+                variant="outline" 
+                className="w-full"
+                onClick={() => setFamilyContactsOpen(true)}
+              >
                 Manage Contacts
               </Button>
             </CardContent>
@@ -208,7 +216,11 @@ const Dashboard = () => {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <Button variant="outline" className="w-full">
+              <Button 
+                variant="outline" 
+                className="w-full"
+                onClick={() => setEmergencyStatusOpen(true)}
+              >
                 Check Status
               </Button>
             </CardContent>
@@ -236,6 +248,16 @@ const Dashboard = () => {
             </Card>
           )}
         </div>
+
+        {/* Modals */}
+        <FamilyContactsModal 
+          open={familyContactsOpen} 
+          onOpenChange={setFamilyContactsOpen} 
+        />
+        <EmergencyStatusModal 
+          open={emergencyStatusOpen} 
+          onOpenChange={setEmergencyStatusOpen} 
+        />
       </main>
     </div>
   );
