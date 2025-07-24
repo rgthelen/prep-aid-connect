@@ -95,19 +95,42 @@ const Admin = () => {
     e.preventDefault();
     if (!profile) return;
 
+    console.log('Creating emergency with form data:', emergencyForm);
+    console.log('Profile:', profile);
+
     setLoading(true);
     setError('');
     setSuccess('');
 
     try {
-      const { error } = await supabase
-        .from('emergencies')
-        .insert({
-          ...emergencyForm,
-          declared_by: profile.id,
-        });
+      // Validate required fields
+      if (!emergencyForm.title || !emergencyForm.emergency_type || !emergencyForm.zipcode || !emergencyForm.state) {
+        throw new Error('Please fill in all required fields (title, type, zipcode, state)');
+      }
 
-      if (error) throw error;
+      const emergencyData = {
+        title: emergencyForm.title,
+        description: emergencyForm.description || null,
+        emergency_type: emergencyForm.emergency_type,
+        zipcode: emergencyForm.zipcode,
+        state: emergencyForm.state,
+        radius_miles: emergencyForm.radius_miles,
+        declared_by: profile.id,
+      };
+
+      console.log('Inserting emergency data:', emergencyData);
+
+      const { data, error } = await supabase
+        .from('emergencies')
+        .insert(emergencyData)
+        .select();
+
+      if (error) {
+        console.error('Supabase error:', error);
+        throw error;
+      }
+
+      console.log('Emergency created successfully:', data);
 
       setSuccess('Emergency declared successfully!');
       setEmergencyForm({
@@ -120,7 +143,8 @@ const Admin = () => {
       });
       fetchEmergencies();
     } catch (err: any) {
-      setError('Failed to declare emergency');
+      console.error('Failed to create emergency:', err);
+      setError(`Failed to declare emergency: ${err.message}`);
     } finally {
       setLoading(false);
     }
