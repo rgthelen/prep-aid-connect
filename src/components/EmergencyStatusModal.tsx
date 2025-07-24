@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { AlertTriangle, MapPin, Clock, Info, CheckCircle } from 'lucide-react';
+import { EmergencyMapView } from './EmergencyMapView';
 
 interface Emergency {
   id: string;
@@ -16,6 +17,7 @@ interface Emergency {
   state: string;
   zipcode: string;
   radius_miles: number;
+  is_active: boolean;
   created_at: string;
   declared_by: string;
 }
@@ -113,6 +115,21 @@ export const EmergencyStatusModal = ({ open, onOpenChange }: EmergencyStatusModa
           </div>
         ) : (
           <div className="space-y-6">
+            {/* Emergency Map */}
+            {emergencies.length > 0 && (
+              <div>
+                <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+                  <MapPin className="h-4 w-4 text-blue-600" />
+                  Emergency Map View
+                </h3>
+                <EmergencyMapView 
+                  emergencies={emergencies}
+                  userLocation={profile ? { zipcode: profile.zipcode || '', state: profile.state || '' } : undefined}
+                  height="300px"
+                />
+              </div>
+            )}
+
             {/* User Locations Overview */}
             <div>
               <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">

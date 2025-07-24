@@ -8,8 +8,9 @@ import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Shield, ArrowLeft, AlertTriangle, Users, MapPin } from 'lucide-react';
+import { Shield, ArrowLeft, AlertTriangle, Users, MapPin, Plus } from 'lucide-react';
 import { Link, Navigate } from 'react-router-dom';
+import { EmergencyMap } from '@/components/EmergencyMap';
 
 interface User {
   id: string;
@@ -40,6 +41,7 @@ const Admin = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [showMapCreator, setShowMapCreator] = useState(false);
 
   // Emergency form
   const [emergencyForm, setEmergencyForm] = useState({
@@ -191,135 +193,190 @@ const Admin = () => {
         )}
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Declare Emergency */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <AlertTriangle className="h-5 w-5 text-emergency" />
-                Declare Emergency
-              </CardTitle>
-              <CardDescription>
-                Create an emergency alert for specific areas
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <form onSubmit={createEmergency} className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="title">Emergency Title</Label>
-                  <Input
-                    id="title"
-                    value={emergencyForm.title}
-                    onChange={(e) => setEmergencyForm({ ...emergencyForm, title: e.target.value })}
-                    placeholder="e.g., Wildfire Alert"
-                    required
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="emergency_type">Emergency Type</Label>
-                  <Input
-                    id="emergency_type"
-                    value={emergencyForm.emergency_type}
-                    onChange={(e) => setEmergencyForm({ ...emergencyForm, emergency_type: e.target.value })}
-                    placeholder="e.g., Wildfire, Flood, Earthquake"
-                    required
-                  />
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="zipcode">ZIP Code</Label>
-                    <Input
-                      id="zipcode"
-                      value={emergencyForm.zipcode}
-                      onChange={(e) => setEmergencyForm({ ...emergencyForm, zipcode: e.target.value })}
-                      placeholder="12345"
-                      required
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="state">State</Label>
-                    <Input
-                      id="state"
-                      value={emergencyForm.state}
-                      onChange={(e) => setEmergencyForm({ ...emergencyForm, state: e.target.value })}
-                      placeholder="CA"
-                      required
-                    />
-                  </div>
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="radius">Radius (miles)</Label>
-                  <Input
-                    id="radius"
-                    type="number"
-                    value={emergencyForm.radius_miles}
-                    onChange={(e) => setEmergencyForm({ ...emergencyForm, radius_miles: parseInt(e.target.value) || 10 })}
-                    min="1"
-                    max="100"
-                    required
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="description">Description (Optional)</Label>
-                  <Textarea
-                    id="description"
-                    value={emergencyForm.description}
-                    onChange={(e) => setEmergencyForm({ ...emergencyForm, description: e.target.value })}
-                    placeholder="Additional details about the emergency..."
-                  />
-                </div>
-
-                <Button type="submit" variant="emergency" className="w-full" disabled={loading}>
-                  {loading ? 'Declaring Emergency...' : 'Declare Emergency'}
-                </Button>
-              </form>
-            </CardContent>
-          </Card>
-
-          {/* User Management */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Users className="h-5 w-5 text-primary" />
-                User Management ({users.length} users)
-              </CardTitle>
-              <CardDescription>
-                Manage user accounts and admin permissions
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-3 max-h-96 overflow-y-auto">
-                {users.map((user) => (
-                  <div key={user.id} className="flex items-center justify-between p-3 border rounded-lg">
-                    <div className="flex-1">
-                      <p className="font-medium">{user.full_name || user.email}</p>
-                      <p className="text-sm text-muted-foreground">
-                        {user.city && user.state ? `${user.city}, ${user.state}` : 'No location set'}
-                        {user.zipcode && ` • ${user.zipcode}`}
-                      </p>
+          {!showMapCreator ? (
+            <>
+              {/* Declare Emergency */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <AlertTriangle className="h-5 w-5 text-emergency" />
+                    Declare Emergency
+                  </CardTitle>
+                  <CardDescription>
+                    Create an emergency alert for specific areas
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    <Button 
+                      onClick={() => setShowMapCreator(true)}
+                      className="w-full flex items-center gap-2"
+                    >
+                      <MapPin className="h-4 w-4" />
+                      Create Emergency with Map
+                    </Button>
+                    
+                    <div className="relative">
+                      <div className="absolute inset-0 flex items-center">
+                        <span className="w-full border-t" />
+                      </div>
+                      <div className="relative flex justify-center text-xs uppercase">
+                        <span className="bg-background px-2 text-muted-foreground">Or use form</span>
+                      </div>
                     </div>
-                    <div className="flex items-center gap-2">
-                      {user.is_admin && (
-                        <span className="px-2 py-1 bg-primary text-primary-foreground text-xs rounded">
-                          Admin
-                        </span>
-                      )}
-                      <Button
-                        variant={user.is_admin ? "destructive" : "outline"}
-                        size="sm"
-                        onClick={() => toggleUserAdmin(user.id, user.is_admin)}
-                      >
-                        {user.is_admin ? 'Remove Admin' : 'Make Admin'}
+
+                    <form onSubmit={createEmergency} className="space-y-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="title">Emergency Title</Label>
+                        <Input
+                          id="title"
+                          value={emergencyForm.title}
+                          onChange={(e) => setEmergencyForm({ ...emergencyForm, title: e.target.value })}
+                          placeholder="e.g., Wildfire Alert"
+                          required
+                        />
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label htmlFor="emergency_type">Emergency Type</Label>
+                        <Input
+                          id="emergency_type"
+                          value={emergencyForm.emergency_type}
+                          onChange={(e) => setEmergencyForm({ ...emergencyForm, emergency_type: e.target.value })}
+                          placeholder="e.g., Wildfire, Flood, Earthquake"
+                          required
+                        />
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                          <Label htmlFor="zipcode">ZIP Code</Label>
+                          <Input
+                            id="zipcode"
+                            value={emergencyForm.zipcode}
+                            onChange={(e) => setEmergencyForm({ ...emergencyForm, zipcode: e.target.value })}
+                            placeholder="12345"
+                            required
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="state">State</Label>
+                          <Input
+                            id="state"
+                            value={emergencyForm.state}
+                            onChange={(e) => setEmergencyForm({ ...emergencyForm, state: e.target.value })}
+                            placeholder="CA"
+                            required
+                          />
+                        </div>
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label htmlFor="radius">Radius (miles)</Label>
+                        <Input
+                          id="radius"
+                          type="number"
+                          value={emergencyForm.radius_miles}
+                          onChange={(e) => setEmergencyForm({ ...emergencyForm, radius_miles: parseInt(e.target.value) || 10 })}
+                          min="1"
+                          max="100"
+                          required
+                        />
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label htmlFor="description">Description (Optional)</Label>
+                        <Textarea
+                          id="description"
+                          value={emergencyForm.description}
+                          onChange={(e) => setEmergencyForm({ ...emergencyForm, description: e.target.value })}
+                          placeholder="Additional details about the emergency..."
+                        />
+                      </div>
+
+                      <Button type="submit" variant="emergency" className="w-full" disabled={loading}>
+                        {loading ? 'Declaring Emergency...' : 'Declare Emergency'}
                       </Button>
-                    </div>
+                    </form>
                   </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
+                </CardContent>
+              </Card>
+
+              {/* User Management */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Users className="h-5 w-5 text-primary" />
+                    User Management ({users.length} users)
+                  </CardTitle>
+                  <CardDescription>
+                    Manage user accounts and admin permissions
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-3 max-h-96 overflow-y-auto">
+                    {users.map((user) => (
+                      <div key={user.id} className="flex items-center justify-between p-3 border rounded-lg">
+                        <div className="flex-1">
+                          <p className="font-medium">{user.full_name || user.email}</p>
+                          <p className="text-sm text-muted-foreground">
+                            {user.city && user.state ? `${user.city}, ${user.state}` : 'No location set'}
+                            {user.zipcode && ` • ${user.zipcode}`}
+                          </p>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          {user.is_admin && (
+                            <span className="px-2 py-1 bg-primary text-primary-foreground text-xs rounded">
+                              Admin
+                            </span>
+                          )}
+                          <Button
+                            variant={user.is_admin ? "destructive" : "outline"}
+                            size="sm"
+                            onClick={() => toggleUserAdmin(user.id, user.is_admin)}
+                          >
+                            {user.is_admin ? 'Remove Admin' : 'Make Admin'}
+                          </Button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            </>
+          ) : (
+            <div className="lg:col-span-2">
+              <Card>
+                <CardHeader className="flex flex-row items-center justify-between">
+                  <div>
+                    <CardTitle className="flex items-center gap-2">
+                      <MapPin className="h-5 w-5 text-emergency" />
+                      Create Emergency with Map
+                    </CardTitle>
+                    <CardDescription>
+                      Use the interactive map to define emergency areas
+                    </CardDescription>
+                  </div>
+                  <Button 
+                    variant="outline" 
+                    onClick={() => setShowMapCreator(false)}
+                  >
+                    Back to Form
+                  </Button>
+                </CardHeader>
+                <CardContent>
+                  <EmergencyMap 
+                    onEmergencyCreated={() => {
+                      fetchEmergencies();
+                      setShowMapCreator(false);
+                      setSuccess('Emergency created successfully with map!');
+                    }}
+                    existingEmergencies={emergencies}
+                  />
+                </CardContent>
+              </Card>
+            </div>
+          )}
         </div>
 
         {/* Active Emergencies */}

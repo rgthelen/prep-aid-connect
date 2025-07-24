@@ -10,6 +10,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Shield, ArrowLeft, Plus, X } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { AddressAutocomplete } from '@/components/AddressAutocomplete';
 
 interface FamilyMember {
   name: string;
@@ -166,11 +167,25 @@ const CreatePEPR = () => {
 
               <div className="space-y-2">
                 <Label htmlFor="address">Street Address</Label>
-                <Input
-                  id="address"
+                <AddressAutocomplete
                   value={formData.address}
-                  onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-                  required
+                  onChange={(value) => setFormData({ ...formData, address: value })}
+                  onSelect={(result) => {
+                    // Auto-fill city, state, zip from selected address
+                    const context = result.context || [];
+                    const place = context.find(c => c.id.startsWith('place'));
+                    const region = context.find(c => c.id.startsWith('region'));
+                    const postcode = context.find(c => c.id.startsWith('postcode'));
+                    
+                    setFormData(prev => ({
+                      ...prev,
+                      address: result.place_name.split(',')[0], // Just the street address
+                      city: place?.text || prev.city,
+                      state: region?.text || prev.state,
+                      zipcode: postcode?.text || prev.zipcode,
+                    }));
+                  }}
+                  placeholder="Enter street address"
                 />
               </div>
 
