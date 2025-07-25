@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { AlertTriangle, MapPin, Clock, Info, CheckCircle } from 'lucide-react';
 import { EmergencyMapView } from './EmergencyMapView';
+import { EmergencyStatusUpdate } from './EmergencyStatusUpdate';
 
 interface Emergency {
   id: string;
@@ -191,41 +192,47 @@ export const EmergencyStatusModal = ({ open, onOpenChange }: EmergencyStatusModa
               </h3>
               
               {relevantEmergencies.length > 0 ? (
-                <div className="space-y-3">
+                <div className="space-y-4">
                   {relevantEmergencies.map((emergency) => (
-                    <Alert key={emergency.id} className="border-l-4 border-l-red-500">
-                      <AlertTriangle className="h-4 w-4" />
-                      <AlertDescription>
-                        <div className="space-y-2">
-                          <div className="flex items-start justify-between">
-                            <div>
-                              <div className="flex items-center gap-2 mb-1">
-                                <h4 className="font-semibold">{emergency.title}</h4>
-                                <Badge 
-                                  className={`text-white ${getEmergencyTypeColor(emergency.emergency_type)}`}
-                                >
-                                  {emergency.emergency_type}
-                                </Badge>
-                              </div>
-                              <p className="text-sm text-muted-foreground mb-2">
-                                {emergency.description}
-                              </p>
-                              <div className="flex items-center gap-4 text-xs text-muted-foreground">
-                                <span className="flex items-center gap-1">
-                                  <MapPin className="h-3 w-3" />
-                                  {emergency.state} {emergency.zipcode}
-                                </span>
-                                <span className="flex items-center gap-1">
-                                  <Clock className="h-3 w-3" />
-                                  {new Date(emergency.created_at).toLocaleDateString()} at{' '}
-                                  {new Date(emergency.created_at).toLocaleTimeString()}
-                                </span>
+                    <div key={emergency.id} className="space-y-3">
+                      <Alert className="border-l-4 border-l-red-500">
+                        <AlertTriangle className="h-4 w-4" />
+                        <AlertDescription>
+                          <div className="space-y-2">
+                            <div className="flex items-start justify-between">
+                              <div>
+                                <div className="flex items-center gap-2 mb-1">
+                                  <h4 className="font-semibold">{emergency.title}</h4>
+                                  <Badge 
+                                    className={`text-white ${getEmergencyTypeColor(emergency.emergency_type)}`}
+                                  >
+                                    {emergency.emergency_type}
+                                  </Badge>
+                                </div>
+                                <p className="text-sm text-muted-foreground mb-2">
+                                  {emergency.description}
+                                </p>
+                                <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                                  <span className="flex items-center gap-1">
+                                    <MapPin className="h-3 w-3" />
+                                    {emergency.state} {emergency.zipcode}
+                                  </span>
+                                  <span className="flex items-center gap-1">
+                                    <Clock className="h-3 w-3" />
+                                    {new Date(emergency.created_at).toLocaleDateString()} at{' '}
+                                    {new Date(emergency.created_at).toLocaleTimeString()}
+                                  </span>
+                                </div>
                               </div>
                             </div>
                           </div>
-                        </div>
-                      </AlertDescription>
-                    </Alert>
+                        </AlertDescription>
+                      </Alert>
+                      <EmergencyStatusUpdate 
+                        emergency={emergency}
+                        onStatusUpdate={fetchEmergencyData}
+                      />
+                    </div>
                   ))}
                 </div>
               ) : (

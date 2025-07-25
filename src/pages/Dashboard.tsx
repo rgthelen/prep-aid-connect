@@ -3,10 +3,13 @@ import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Shield, Plus, Users, AlertTriangle, FileText, MapPin, Calendar } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { FamilyContactsModal } from '@/components/FamilyContactsModal';
 import { EmergencyStatusModal } from '@/components/EmergencyStatusModal';
+import { useToast } from '@/hooks/use-toast';
 
 interface PEPR {
   id: string;
@@ -19,15 +22,42 @@ interface PEPR {
   updated_at: string;
 }
 
+interface Emergency {
+  id: string;
+  title: string;
+  emergency_type: string;
+  state: string;
+  zipcode: string;
+  radius_miles: number;
+  description: string | null;
+  created_at: string;
+}
+
+interface UserEmergencyStatus {
+  id: string;
+  status: string;
+  notes: string | null;
+  location: string | null;
+  updated_at: string;
+  emergency_id: string;
+}
+
 const Dashboard = () => {
   const { profile, signOut } = useAuth();
+  const { toast } = useToast();
   const [peprs, setPeprs] = useState<PEPR[]>([]);
   const [loading, setLoading] = useState(true);
   const [familyContactsOpen, setFamilyContactsOpen] = useState(false);
   const [emergencyStatusOpen, setEmergencyStatusOpen] = useState(false);
+  const [activeEmergencies, setActiveEmergencies] = useState<Emergency[]>([]);
+  const [userStatuses, setUserStatuses] = useState<UserEmergencyStatus[]>([]);
+  const [updatingStatus, setUpdatingStatus] = useState<string | null>(null);
 
   useEffect(() => {
-    fetchPeprs();
+    if (profile) {
+      fetchPeprs();
+      fetchActiveEmergencies();
+    }
   }, [profile]);
 
   const fetchPeprs = async () => {
@@ -46,6 +76,127 @@ const Dashboard = () => {
       console.error('Error fetching PEPRs:', error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const calculateDistance = (zip1: string, state1: string, zip2: string, state2: string): number => {
+    if (zip1 === zip2 && state1 === state2) return 0;
+    
+    const zip1Num = parseInt(zip1.replace(/\D/g, '')) || 0;
+    const zip2Num = parseInt(zip2.replace(/\D/g, '')) || 0;
+    const zipDiff = Math.abs(zip1Num - zip2Num);
+    
+    let distance = zipDiff * 0.1;
+    
+    if (state1 !== state2) {
+      distance += 50;
+    }
+    
+    return Math.min(distance, 500);
+  };
+
+  const isWithinEmergencyArea = (userZip: string, userState: string, emergencyZip: string, emergencyState: string, radiusMiles: number): boolean => {
+    const distance = calculateDistance(userZip, userState, emergencyZip, emergencyState);
+    return distance <= radiusMiles;
+  };
+
+  const fetchActiveEmergencies = async () => {
+    if (!profile) return;
+    
+    try {
+      // Fetch active emergencies
+      const { data: emergencies, error: emergencyError } = await supabase
+        .from('emergencies')
+        .select('*')
+        .eq('is_active', true)
+        .order('created_at', { ascending: false });
+
+      if (emergencyError) throw emergencyError;
+
+      // Filter emergencies relevant to user's locations
+      const relevantEmergencies = (emergencies || []).filter(emergency => 
+        peprs.some(pepr => 
+          isWithinEmergencyArea(pepr.zipcode, pepr.state, emergency.zipcode, emergency.state, emergency.radius_miles)
+        )
+      );
+
+      setActiveEmergencies(relevantEmergencies);
+
+      // Fetch user's emergency statuses
+      const { data: statuses, error: statusError } = await supabase
+        .from('user_emergency_status')
+        .select('*')
+        .eq('user_id', profile.id)
+        .in('emergency_id', relevantEmergencies.map(e => e.id));
+
+      if (statusError) throw statusError;
+      setUserStatuses(statuses || []);
+
+    } catch (error) {
+      console.error('Error fetching emergency data:', error);
+    }
+  };
+
+  const updateEmergencyStatus = async (emergencyId: string, status: string) => {
+    if (!profile) return;
+
+    try {
+      setUpdatingStatus(emergencyId);
+
+      const { error } = await supabase
+        .from('user_emergency_status')
+        .upsert({
+          user_id: profile.id,
+          emergency_id: emergencyId,
+          status,
+          updated_at: new Date().toISOString(),
+        }, {
+          onConflict: 'user_id,emergency_id'
+        });
+
+      if (error) throw error;
+
+      toast({
+        title: "Status Updated",
+        description: "Your emergency status has been updated successfully.",
+      });
+
+      fetchActiveEmergencies();
+    } catch (error) {
+      console.error('Error updating status:', error);
+      toast({
+        title: "Error",
+        description: "Failed to update your status. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setUpdatingStatus(null);
+    }
+  };
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'safe':
+      case 'individual_safe':
+        return 'text-green-600';
+      case 'someone_in_danger':
+        return 'text-amber-600';
+      case 'we_in_danger':
+      case 'need_help':
+        return 'text-red-600';
+      default:
+        return 'text-gray-600';
+    }
+  };
+
+  const getStatusLabel = (status: string) => {
+    switch (status) {
+      case 'safe': return 'We are SAFE';
+      case 'individual_safe': return 'I am SAFE';
+      case 'someone_in_danger': return 'Someone is in danger';
+      case 'we_in_danger': return 'We are in danger';
+      case 'need_help': return 'We need help';
+      default: return 'Status unknown';
     }
   };
 
@@ -76,6 +227,82 @@ const Dashboard = () => {
 
       {/* Main Content */}
       <main className="container mx-auto px-4 py-8">
+        {/* Active Emergency Alerts */}
+        {activeEmergencies.length > 0 && (
+          <div className="mb-8">
+            <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
+              <AlertTriangle className="h-5 w-5 text-red-500" />
+              Active Emergency Alerts
+            </h2>
+            <div className="space-y-4">
+              {activeEmergencies.map((emergency) => {
+                const userStatus = userStatuses.find(s => s.emergency_id === emergency.id);
+                return (
+                  <Alert key={emergency.id} className="border-l-4 border-l-red-500">
+                    <AlertTriangle className="h-4 w-4" />
+                    <AlertDescription>
+                      <div className="flex items-start justify-between">
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2 mb-2">
+                            <h4 className="font-semibold">{emergency.title}</h4>
+                            <span className="px-2 py-1 bg-red-100 text-red-800 text-xs rounded">
+                              {emergency.emergency_type}
+                            </span>
+                          </div>
+                          <p className="text-sm text-muted-foreground mb-3">
+                            {emergency.description}
+                          </p>
+                          <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                            <span className="flex items-center gap-1">
+                              <MapPin className="h-3 w-3" />
+                              {emergency.state} {emergency.zipcode}
+                            </span>
+                            <span className="flex items-center gap-1">
+                              <Calendar className="h-3 w-3" />
+                              {new Date(emergency.created_at).toLocaleDateString()}
+                            </span>
+                          </div>
+                          {userStatus && (
+                            <div className="mt-2 text-sm">
+                              <span className="font-medium">Your Status: </span>
+                              <span className={getStatusColor(userStatus.status)}>
+                                {getStatusLabel(userStatus.status)}
+                              </span>
+                              <span className="text-muted-foreground ml-2">
+                                (Updated: {new Date(userStatus.updated_at).toLocaleString()})
+                              </span>
+                            </div>
+                          )}
+                        </div>
+                        <div className="ml-4 min-w-[200px]">
+                          <label className="text-sm font-medium block mb-2">Update Status:</label>
+                          <Select
+                            value={userStatus?.status || ''}
+                            onValueChange={(value) => updateEmergencyStatus(emergency.id, value)}
+                            disabled={updatingStatus === emergency.id}
+                          >
+                            <SelectTrigger className="w-full">
+                              <SelectValue placeholder="Select status" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="safe">We are SAFE</SelectItem>
+                              <SelectItem value="individual_safe">I am SAFE</SelectItem>
+                              <SelectItem value="someone_in_danger">Someone is in danger</SelectItem>
+                              <SelectItem value="we_in_danger">We are in danger</SelectItem>
+                              <SelectItem value="need_help">We need help</SelectItem>
+                              <SelectItem value="unknown">Status unknown</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+                      </div>
+                    </AlertDescription>
+                  </Alert>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-foreground mb-2">Dashboard</h1>
           <p className="text-muted-foreground">
