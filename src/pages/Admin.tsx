@@ -42,6 +42,7 @@ const Admin = () => {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [showMapCreator, setShowMapCreator] = useState(false);
+  const [editingEmergency, setEditingEmergency] = useState<Emergency | null>(null);
 
   // Emergency form
   const [emergencyForm, setEmergencyForm] = useState({
@@ -179,6 +180,71 @@ const Admin = () => {
     }
   };
 
+  const editEmergency = (emergency: Emergency) => {
+    setEditingEmergency(emergency);
+    setEmergencyForm({
+      title: emergency.title,
+      description: emergency.description || '',
+      emergency_type: emergency.emergency_type,
+      zipcode: emergency.zipcode,
+      radius_miles: emergency.radius_miles,
+      state: emergency.state,
+    });
+  };
+
+  const updateEmergency = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!profile || !editingEmergency) return;
+
+    setLoading(true);
+    setError('');
+    setSuccess('');
+
+    try {
+      const { error } = await supabase
+        .from('emergencies')
+        .update({
+          title: emergencyForm.title,
+          description: emergencyForm.description || null,
+          emergency_type: emergencyForm.emergency_type,
+          zipcode: emergencyForm.zipcode,
+          state: emergencyForm.state,
+          radius_miles: emergencyForm.radius_miles,
+        })
+        .eq('id', editingEmergency.id);
+
+      if (error) throw error;
+
+      setSuccess('Emergency updated successfully!');
+      setEditingEmergency(null);
+      setEmergencyForm({
+        title: '',
+        description: '',
+        emergency_type: '',
+        zipcode: '',
+        radius_miles: 10,
+        state: '',
+      });
+      fetchEmergencies();
+    } catch (err: any) {
+      setError(`Failed to update emergency: ${err.message}`);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const cancelEdit = () => {
+    setEditingEmergency(null);
+    setEmergencyForm({
+      title: '',
+      description: '',
+      emergency_type: '',
+      zipcode: '',
+      radius_miles: 10,
+      state: '',
+    });
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-background to-secondary/20">
       {/* Header */}
@@ -224,10 +290,10 @@ const Admin = () => {
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <AlertTriangle className="h-5 w-5 text-emergency" />
-                    Declare Emergency
+                    {editingEmergency ? 'Edit Emergency' : 'Declare Emergency'}
                   </CardTitle>
                   <CardDescription>
-                    Create an emergency alert for specific areas
+                    {editingEmergency ? 'Update emergency details' : 'Create an emergency alert for specific areas'}
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -249,7 +315,7 @@ const Admin = () => {
                       </div>
                     </div>
 
-                    <form onSubmit={createEmergency} className="space-y-4">
+                    <form onSubmit={editingEmergency ? updateEmergency : createEmergency} className="space-y-4">
                       <div className="space-y-2">
                         <Label htmlFor="title">Emergency Title</Label>
                         <Input
@@ -318,9 +384,16 @@ const Admin = () => {
                         />
                       </div>
 
-                      <Button type="submit" variant="emergency" className="w-full" disabled={loading}>
-                        {loading ? 'Declaring Emergency...' : 'Declare Emergency'}
-                      </Button>
+                      <div className="flex gap-2">
+                        <Button type="submit" variant="emergency" className="flex-1" disabled={loading}>
+                          {loading ? (editingEmergency ? 'Updating...' : 'Declaring Emergency...') : (editingEmergency ? 'Update Emergency' : 'Declare Emergency')}
+                        </Button>
+                        {editingEmergency && (
+                          <Button type="button" variant="outline" onClick={cancelEdit}>
+                            Cancel
+                          </Button>
+                        )}
+                      </div>
                     </form>
                   </div>
                 </CardContent>
@@ -443,13 +516,22 @@ const Admin = () => {
                       </span>
                     </TableCell>
                     <TableCell>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => toggleEmergencyStatus(emergency.id, emergency.is_active)}
-                      >
-                        {emergency.is_active ? 'Deactivate' : 'Activate'}
-                      </Button>
+                      <div className="flex gap-2">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => toggleEmergencyStatus(emergency.id, emergency.is_active)}
+                        >
+                          {emergency.is_active ? 'Deactivate' : 'Activate'}
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => editEmergency(emergency)}
+                        >
+                          Edit
+                        </Button>
+                      </div>
                     </TableCell>
                   </TableRow>
                 ))}

@@ -161,7 +161,8 @@ const Dashboard = () => {
         description: "Your emergency status has been updated successfully.",
       });
 
-      fetchActiveEmergencies();
+      // Refresh both emergencies and user statuses to show the updated status
+      await fetchActiveEmergencies();
     } catch (error) {
       console.error('Error updating status:', error);
       toast({

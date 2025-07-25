@@ -72,10 +72,13 @@ export const EmergencyMap = ({ onEmergencyCreated, existingEmergencies }: Emerge
           center: [-95.7129, 37.0902], // Center of US
           zoom: 4,
           touchZoomRotate: true,
-          touchPitch: true,
+          touchPitch: false,
           dragRotate: false,
           pitchWithRotate: false,
         });
+
+        // Set initial cursor style
+        map.current.getCanvas().style.cursor = 'grab';
 
         // Add geocoder for search
         geocoder.current = new MapboxGeocoder({
@@ -335,9 +338,9 @@ export const EmergencyMap = ({ onEmergencyCreated, existingEmergencies }: Emerge
             'interpolate',
             ['linear'],
             ['zoom'],
-            4, 4,
-            10, 6,
-            16, 8
+            4, 3,
+            10, 5,
+            16, 7
           ],
           'circle-stroke-width': 2,
           'circle-stroke-color': '#ffffff',
@@ -371,6 +374,19 @@ export const EmergencyMap = ({ onEmergencyCreated, existingEmergencies }: Emerge
             `)
             .addTo(map.current!);
         });
+
+        // Change cursor on hover
+        map.current?.on('mouseenter', layerId, () => {
+          if (!drawingMode) {
+            map.current!.getCanvas().style.cursor = 'pointer';
+          }
+        });
+
+        map.current?.on('mouseleave', layerId, () => {
+          if (!drawingMode) {
+            map.current!.getCanvas().style.cursor = 'grab';
+          }
+        });
       });
 
       // Fit bounds to show all emergencies
@@ -393,6 +409,18 @@ export const EmergencyMap = ({ onEmergencyCreated, existingEmergencies }: Emerge
     map.current.on('click', (e) => {
       if (drawingMode === 'circle') {
         createCircleArea(e.lngLat);
+      }
+    });
+
+    map.current.on('mouseenter', () => {
+      if (drawingMode === 'circle') {
+        map.current!.getCanvas().style.cursor = 'crosshair';
+      }
+    });
+
+    map.current.on('mouseleave', () => {
+      if (!drawingMode) {
+        map.current!.getCanvas().style.cursor = 'grab';
       }
     });
   };
@@ -480,6 +508,19 @@ export const EmergencyMap = ({ onEmergencyCreated, existingEmergencies }: Emerge
     setDrawingMode(null);
   };
 
+  const handleSetDrawingMode = (mode: 'circle' | 'polygon' | null) => {
+    setDrawingMode(mode);
+    clearDrawing();
+    
+    if (map.current) {
+      if (mode === 'circle') {
+        map.current.getCanvas().style.cursor = 'crosshair';
+      } else {
+        map.current.getCanvas().style.cursor = 'grab';
+      }
+    }
+  };
+
   const saveEmergency = async () => {
     if (!currentDrawing || !currentLocation) return;
 
@@ -547,7 +588,7 @@ export const EmergencyMap = ({ onEmergencyCreated, existingEmergencies }: Emerge
               <Button
                 size="sm"
                 variant={drawingMode === 'circle' ? 'default' : 'outline'}
-                onClick={() => setDrawingMode(drawingMode === 'circle' ? null : 'circle')}
+                onClick={() => handleSetDrawingMode(drawingMode === 'circle' ? null : 'circle')}
                 className="flex-1"
               >
                 <Circle className="h-4 w-4 mr-1" />
