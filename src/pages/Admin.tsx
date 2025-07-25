@@ -32,6 +32,7 @@ interface Emergency {
   state: string;
   is_active: boolean;
   created_at: string;
+  disaster_prompts: string | null;
 }
 
 const Admin = () => {
@@ -52,6 +53,7 @@ const Admin = () => {
     zipcode: '',
     radius_miles: 10,
     state: '',
+    disaster_prompts: '',
   });
 
   // If user is not admin, redirect
@@ -116,6 +118,7 @@ const Admin = () => {
         zipcode: emergencyForm.zipcode,
         state: emergencyForm.state,
         radius_miles: emergencyForm.radius_miles,
+        disaster_prompts: emergencyForm.disaster_prompts || null,
         declared_by: profile.id,
       };
 
@@ -141,6 +144,7 @@ const Admin = () => {
         zipcode: '',
         radius_miles: 10,
         state: '',
+        disaster_prompts: '',
       });
       fetchEmergencies();
     } catch (err: any) {
@@ -189,6 +193,7 @@ const Admin = () => {
       zipcode: emergency.zipcode,
       radius_miles: emergency.radius_miles,
       state: emergency.state,
+      disaster_prompts: emergency.disaster_prompts || '',
     });
   };
 
@@ -210,6 +215,7 @@ const Admin = () => {
           zipcode: emergencyForm.zipcode,
           state: emergencyForm.state,
           radius_miles: emergencyForm.radius_miles,
+          disaster_prompts: emergencyForm.disaster_prompts || null,
         })
         .eq('id', editingEmergency.id);
 
@@ -224,6 +230,7 @@ const Admin = () => {
         zipcode: '',
         radius_miles: 10,
         state: '',
+        disaster_prompts: '',
       });
       fetchEmergencies();
     } catch (err: any) {
@@ -242,6 +249,7 @@ const Admin = () => {
       zipcode: '',
       radius_miles: 10,
       state: '',
+      disaster_prompts: '',
     });
   };
 
@@ -382,6 +390,20 @@ const Admin = () => {
                           onChange={(e) => setEmergencyForm({ ...emergencyForm, description: e.target.value })}
                           placeholder="Additional details about the emergency..."
                         />
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label htmlFor="disaster_prompts">Disaster-Level AI Prompts (Optional)</Label>
+                        <Textarea
+                          id="disaster_prompts"
+                          value={emergencyForm.disaster_prompts}
+                          onChange={(e) => setEmergencyForm({ ...emergencyForm, disaster_prompts: e.target.value })}
+                          placeholder="Special instructions for the Emergency Agent during this disaster (e.g., 'Tell people to avoid downtown area due to bridge collapse. Recommend evacuation routes via Highway 101.')"
+                          className="min-h-[80px]"
+                        />
+                        <p className="text-xs text-muted-foreground">
+                          These prompts will be automatically included when the Emergency Agent responds to users during this emergency.
+                        </p>
                       </div>
 
                       <div className="flex gap-2">
