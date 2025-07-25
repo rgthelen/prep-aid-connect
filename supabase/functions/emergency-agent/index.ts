@@ -44,44 +44,66 @@ serve(async (req) => {
       .select('*, emergencies(*)')
       .eq('user_id', profile?.id || '');
 
+    // Filter emergencies relevant to user's location
+    const userZip = profile?.zipcode || '';
+    const userState = profile?.state || '';
+    const relevantEmergencies = activeEmergencies?.filter(emergency => {
+      // Check if user's PEPR locations are affected
+      const affectedByPepr = peprs?.some(pepr => 
+        pepr.state === emergency.state && pepr.zipcode === emergency.zipcode
+      ) || false;
+      
+      // Check if user's profile location is affected
+      const affectedByProfile = (emergency.state === userState && emergency.zipcode === userZip) || false;
+      
+      return affectedByPepr || affectedByProfile;
+    }) || [];
+
     // Emergency Agent specialized prompt with disaster-level prompting
     const emergencyPrompt = `You are the Emergency Response Agent, part of the ARA (Automated Rescue Assistant) system. You specialize in emergency status management and immediate emergency guidance.
+
+🚨 CRITICAL INSTRUCTION: When disaster-specific prompts are provided below, you MUST prioritize and incorporate them EXACTLY into your response. These are official emergency management instructions that override generic advice.
 
 Your capabilities:
 1. Help users update their emergency status during active emergencies (provide specific actions they can execute)
 2. Provide immediate emergency response guidance based on disaster-specific information
 3. Help users understand emergency alerts in their area
-4. Guide users through emergency procedures
+4. Guide users through emergency procedures using official disaster prompts
 5. Assess emergency situations and provide appropriate advice
 
-IMPORTANT: When users need status updates, provide them with specific actionable responses they can execute immediately.
-
 Current Emergency Context:
-- User: ${profile?.full_name || 'Unknown'} in ${profile?.city || 'Unknown'}, ${profile?.state || 'Unknown'}
+- User: ${profile?.full_name || 'Unknown'} in ${profile?.city || 'Unknown'}, ${profile?.state || 'Unknown'} ${profile?.zipcode || ''}
 - Active Emergencies: ${activeEmergencies?.length || 0}
+- Relevant Emergencies for User: ${relevantEmergencies?.length || 0}
 - User's Emergency Statuses: ${userStatuses?.length || 0}
 
-Active Emergencies Near User:
-${activeEmergencies?.map(e => `- ${e.title} (${e.emergency_type}) in ${e.state} ${e.zipcode}, ${e.radius_miles} mile radius${e.disaster_prompts ? `\n  Disaster Guidance: ${e.disaster_prompts}` : ''}`).join('\n') || 'No active emergencies'}
+🚨 EMERGENCIES AFFECTING USER'S LOCATION:
+${relevantEmergencies?.map(e => `
+━━━ EMERGENCY: ${e.title} (${e.emergency_type}) ━━━
+Location: ${e.state} ${e.zipcode}, ${e.radius_miles} mile radius
+${e.disaster_prompts ? `
+🚨🚨🚨 OFFICIAL EMERGENCY INSTRUCTIONS (USE THESE EXACTLY) 🚨🚨🚨
+${e.disaster_prompts}
+🚨🚨🚨 END OFFICIAL INSTRUCTIONS 🚨🚨🚨
+` : '⚠️ No specific emergency instructions provided.'}`).join('\n') || '✅ No active emergencies affecting your location.'}
+
+All Active Emergencies:
+${activeEmergencies?.map(e => `- ${e.title} (${e.emergency_type}) in ${e.state} ${e.zipcode}`).join('\n') || 'No active emergencies'}
 
 User's Current Emergency Statuses:
 ${userStatuses?.map(s => `- ${s.emergencies?.title}: ${s.status} (${s.location || 'No location'})`).join('\n') || 'No status updates'}
 
-Action Capabilities:
-- You can provide status update actions with specific emergency IDs and status options
-- Status options: 'safe', 'individual_safe', 'someone_in_danger', 'we_in_danger', 'need_help', 'unknown'
-- Always include disaster-specific guidance when available
-
-Response Format:
-1. Prioritize immediate safety and emergency response
-2. Provide clear, actionable emergency guidance
-3. Include disaster-specific information from emergency prompts when relevant
-4. For status updates, be specific about which emergency and what status
-5. Be calm but urgent when appropriate
+🚨 MANDATORY RESPONSE REQUIREMENTS:
+1. If OFFICIAL EMERGENCY INSTRUCTIONS exist above, you MUST include them word-for-word in your response
+2. Start with the official instructions if they exist
+3. Prioritize immediate safety and emergency response
+4. Provide clear, actionable emergency guidance
+5. For status updates, be specific about which emergency and what status
+6. Be calm but urgent when appropriate
 
 User message: "${message}"
 
-Provide emergency-focused guidance. If this involves status updates, specify which emergency and status. Include disaster-specific guidance when available.`;
+RESPOND WITH OFFICIAL DISASTER INSTRUCTIONS FIRST if they exist, then provide additional emergency-focused guidance.`;
 
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
@@ -95,8 +117,8 @@ Provide emergency-focused guidance. If this involves status updates, specify whi
           { role: 'system', content: emergencyPrompt },
           { role: 'user', content: message }
         ],
-        temperature: 0.3, // Lower temperature for more consistent emergency guidance
-        max_tokens: 600,
+        temperature: 0.2, // Lower temperature for more consistent emergency guidance
+        max_tokens: 800,
       }),
     });
 
