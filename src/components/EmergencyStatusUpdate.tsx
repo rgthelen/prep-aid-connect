@@ -24,10 +24,9 @@ interface EmergencyStatusUpdateProps {
 
 const STATUS_OPTIONS = [
   { value: 'safe', label: 'We are SAFE', icon: CheckCircle, color: 'text-green-600' },
-  { value: 'individual_safe', label: 'I am SAFE', icon: User, color: 'text-green-600' },
-  { value: 'someone_in_danger', label: 'Someone is in danger', icon: AlertTriangle, color: 'text-amber-600' },
-  { value: 'we_in_danger', label: 'We are in danger', icon: Users, color: 'text-red-600' },
-  { value: 'need_help', label: 'We need help', icon: HelpCircle, color: 'text-red-600' },
+  { value: 'needs_help', label: 'We need help', icon: HelpCircle, color: 'text-red-600' },
+  { value: 'at_home', label: 'At home', icon: User, color: 'text-blue-600' },
+  { value: 'evacuated', label: 'Evacuated', icon: Users, color: 'text-amber-600' },
   { value: 'unknown', label: 'Status unknown', icon: HelpCircle, color: 'text-gray-600' },
 ];
 
