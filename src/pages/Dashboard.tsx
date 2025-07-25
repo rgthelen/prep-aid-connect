@@ -9,6 +9,7 @@ import { Shield, Plus, Users, AlertTriangle, FileText, MapPin, Calendar } from '
 import { Link } from 'react-router-dom';
 import { FamilyContactsModal } from '@/components/FamilyContactsModal';
 import { EmergencyStatusModal } from '@/components/EmergencyStatusModal';
+import { ChatInterface } from '@/components/ChatInterface';
 import { useToast } from '@/hooks/use-toast';
 
 interface PEPR {
@@ -490,6 +491,9 @@ const Dashboard = () => {
           open={emergencyStatusOpen} 
           onOpenChange={setEmergencyStatusOpen} 
         />
+
+        {/* Chat Interface */}
+        <ChatInterface />
       </main>
     </div>
   );
