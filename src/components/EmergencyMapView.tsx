@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
+import { supabase } from '@/integrations/supabase/client';
 
 interface Emergency {
   id: string;
@@ -31,23 +32,42 @@ export const EmergencyMapView = ({
   useEffect(() => {
     if (!mapContainer.current) return;
 
-    // Get Mapbox token from environment or use a placeholder
-    const mapboxToken = 'pk.eyJ1IjoidGVzdCIsImEiOiJjazl3cHNhbGYwMDFrM29xbGR6emt2M3VzIn0.test';
-    
-    mapboxgl.accessToken = mapboxToken;
-    
-    map.current = new mapboxgl.Map({
-      container: mapContainer.current,
-      style: 'mapbox://styles/mapbox/light-v11',
-      center: [-95.7129, 37.0902], // Center of US
-      zoom: 4,
-    });
+    const initializeMap = async () => {
+      try {
+        // Fetch Mapbox token from edge function
+        const { data: tokenData, error: tokenError } = await supabase.functions.invoke('get-mapbox-token');
+        
+        if (tokenError) {
+          console.error('Error fetching Mapbox token:', tokenError);
+          return;
+        }
 
-    map.current.addControl(new mapboxgl.NavigationControl(), 'top-right');
+        const mapboxToken = tokenData?.token;
+        if (!mapboxToken) {
+          console.error('No Mapbox token received');
+          return;
+        }
 
-    map.current.on('load', () => {
-      loadEmergencies();
-    });
+        mapboxgl.accessToken = mapboxToken;
+        
+        map.current = new mapboxgl.Map({
+          container: mapContainer.current!,
+          style: 'mapbox://styles/mapbox/light-v11',
+          center: [-95.7129, 37.0902], // Center of US
+          zoom: 4,
+        });
+
+        map.current.addControl(new mapboxgl.NavigationControl(), 'top-right');
+
+        map.current.on('load', () => {
+          loadEmergencies();
+        });
+      } catch (error) {
+        console.error('Error initializing map:', error);
+      }
+    };
+
+    initializeMap();
 
     return () => {
       map.current?.remove();

@@ -8,6 +8,8 @@ import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import Dashboard from "./pages/Dashboard";
 import CreatePEPR from "./pages/CreatePEPR";
+import PEPRDetails from "./pages/PEPRDetails";
+import EditPEPR from "./pages/EditPEPR";
 import Admin from "./pages/Admin";
 import NotFound from "./pages/NotFound";
 
@@ -71,6 +73,16 @@ const App = () => (
             <Route path="/create-pepr" element={
               <ProtectedRoute>
                 <CreatePEPR />
+              </ProtectedRoute>
+            } />
+            <Route path="/pepr/:id" element={
+              <ProtectedRoute>
+                <PEPRDetails />
+              </ProtectedRoute>
+            } />
+            <Route path="/edit-pepr/:id" element={
+              <ProtectedRoute>
+                <EditPEPR />
               </ProtectedRoute>
             } />
             <Route path="/admin" element={

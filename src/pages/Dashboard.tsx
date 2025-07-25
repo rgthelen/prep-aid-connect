@@ -127,12 +127,16 @@ const Dashboard = () => {
                       Created {new Date(pepr.created_at).toLocaleDateString()}
                     </div>
                     <div className="space-y-2">
-                      <Button variant="outline" size="sm" className="w-full">
-                        View Details
-                      </Button>
-                      <Button variant="ghost" size="sm" className="w-full text-xs">
-                        Edit PEPR
-                      </Button>
+                      <Link to={`/pepr/${pepr.id}`}>
+                        <Button variant="outline" size="sm" className="w-full">
+                          View Details
+                        </Button>
+                      </Link>
+                      <Link to={`/edit-pepr/${pepr.id}`}>
+                        <Button variant="ghost" size="sm" className="w-full text-xs">
+                          Edit PEPR
+                        </Button>
+                      </Link>
                     </div>
                   </CardContent>
                 </Card>
