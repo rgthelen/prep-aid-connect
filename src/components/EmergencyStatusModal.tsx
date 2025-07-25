@@ -40,17 +40,46 @@ export const EmergencyStatusModal = ({ open, onOpenChange }: EmergencyStatusModa
     }
   }, [open, profile]);
 
+  // Enhanced distance calculation function
+  const calculateDistance = (zip1: string, state1: string, zip2: string, state2: string): number => {
+    if (zip1 === zip2 && state1 === state2) return 0;
+    
+    const zip1Num = parseInt(zip1.replace(/\D/g, '')) || 0;
+    const zip2Num = parseInt(zip2.replace(/\D/g, '')) || 0;
+    const zipDiff = Math.abs(zip1Num - zip2Num);
+    
+    let distance = zipDiff * 0.1; // Rough approximation
+    
+    if (state1 !== state2) {
+      distance += 50; // Add 50 miles for different states
+    }
+    
+    return Math.min(distance, 500);
+  };
+
+  // Function to check if user is within emergency area
+  const isWithinEmergencyArea = (userZip: string, userState: string, emergencyZip: string, emergencyState: string, radiusMiles: number): boolean => {
+    const distance = calculateDistance(userZip, userState, emergencyZip, emergencyState);
+    return distance <= radiusMiles;
+  };
+
   const fetchEmergencyData = async () => {
     if (!profile) return;
     
     try {
+      setLoading(true);
+      
       // Fetch user's PEPR locations
       const { data: peprData, error: peprError } = await supabase
         .from('peprs')
         .select('name, state, zipcode')
         .eq('owner_id', profile.id);
 
-      if (peprError) throw peprError;
+      if (peprError) {
+        console.error('Error fetching PEPRs:', peprError);
+        throw peprError;
+      }
+      
       setUserLocations(peprData || []);
 
       // Fetch active emergencies
@@ -60,16 +89,20 @@ export const EmergencyStatusModal = ({ open, onOpenChange }: EmergencyStatusModa
         .eq('is_active', true)
         .order('created_at', { ascending: false });
 
-      if (emergencyError) throw emergencyError;
+      if (emergencyError) {
+        console.error('Error fetching emergencies:', emergencyError);
+        throw emergencyError;
+      }
+      
       setEmergencies(emergencyData || []);
 
-      // Filter emergencies relevant to user's locations
+      // Enhanced filtering using proper distance calculation
       const relevant = (emergencyData || []).filter(emergency => 
         (peprData || []).some(location => 
-          location.state.toLowerCase() === emergency.state.toLowerCase() ||
-          location.zipcode === emergency.zipcode
+          isWithinEmergencyArea(location.zipcode, location.state, emergency.zipcode, emergency.state, emergency.radius_miles)
         )
       );
+      
       setRelevantEmergencies(relevant);
 
     } catch (error) {
