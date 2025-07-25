@@ -9,7 +9,7 @@ import { Shield, Plus, Users, AlertTriangle, FileText, MapPin, Calendar } from '
 import { Link } from 'react-router-dom';
 import { FamilyContactsModal } from '@/components/FamilyContactsModal';
 import { EmergencyStatusModal } from '@/components/EmergencyStatusModal';
-import { ChatInterface } from '@/components/ChatInterface';
+import { ProminentChatInterface } from '@/components/ProminentChatInterface';
 import { useToast } from '@/hooks/use-toast';
 
 interface PEPR {
@@ -305,10 +305,15 @@ const Dashboard = () => {
           </div>
         )}
 
+        {/* Main Chat Interface - Prominent */}
+        <div className="mb-12">
+          <ProminentChatInterface />
+        </div>
+
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-foreground mb-2">Dashboard</h1>
+          <h2 className="text-2xl font-bold text-foreground mb-2">Your Emergency Data</h2>
           <p className="text-muted-foreground">
-            Manage your Personal Emergency Preparedness Records and stay ready for any situation.
+            Quick overview of your PEPRs and emergency information.
           </p>
         </div>
 
@@ -492,8 +497,6 @@ const Dashboard = () => {
           onOpenChange={setEmergencyStatusOpen} 
         />
 
-        {/* Chat Interface */}
-        <ChatInterface />
       </main>
     </div>
   );

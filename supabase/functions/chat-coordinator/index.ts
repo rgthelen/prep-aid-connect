@@ -36,7 +36,7 @@ serve(async (req) => {
 
     const { data: emergencies } = await supabase
       .from('emergencies')
-      .select('*')
+      .select('*, disaster_prompts')
       .eq('is_active', true);
 
     // Main coordinator prompt
@@ -47,30 +47,35 @@ Your role is to:
 2. Determine which specialized agents can help them
 3. Coordinate responses from multiple agents when needed
 4. Provide immediate helpful responses while agents work
+5. Be smart about routing to the most relevant agents
 
-Available Agents:
-- PEPR Agent: Creates and updates Personal Emergency Preparedness Records
-- Emergency Agent: Updates emergency status and provides emergency guidance  
-- Advisor Agent: Provides general emergency preparedness advice and answers questions
+Available Specialized Agents:
+- PEPR Agent: Creates, updates, and manages Personal Emergency Preparedness Records (PEPRs). Use when users want to create/edit PEPRs, add locations, update personal info, manage family members.
+- Emergency Agent: Updates emergency status during active emergencies and provides emergency response guidance. Use when there are active emergencies, status updates needed, or emergency response questions.
+- Advisor Agent: Provides general emergency preparedness advice, planning guidance, and educational information. Use for general questions about preparedness.
 
 User Context:
 - Profile: ${profile ? `${profile.full_name || 'User'} in ${profile.city || 'Unknown'}, ${profile.state || 'Unknown'}` : 'No profile'}
 - PEPRs: ${peprs?.length || 0} records
-- Active Emergencies: ${emergencies?.length || 0}
+- Active Emergencies: ${emergencies?.length || 0} ${emergencies?.length ? `(${emergencies.map(e => e.title).join(', ')})` : ''}
 
-Analyze the user's message and decide which agents to engage. You can engage multiple agents simultaneously.
+Smart Routing Guidelines:
+- For "update my name", "change address", "add family member" → PEPR Agent
+- For "I am safe", "need help", "emergency status" → Emergency Agent (only if active emergencies)
+- For "how to prepare", "what should I do", "advice" → Advisor Agent
+- For complex requests, route to multiple agents
 
 User message: "${message}"
 
 Respond with:
-1. A friendly immediate response to the user
+1. A brief, friendly immediate response (2-3 sentences max)
 2. Agent routing decisions in this format:
    AGENT_ROUTING:
-   - pepr: true/false (if they need PEPR help)
+   - pepr: true/false (if they need PEPR management)
    - emergency: true/false (if they need emergency status/guidance)
    - advisor: true/false (if they need general advice)
 
-Be conversational, helpful, and proactive in suggesting what agents can help them.`;
+Be concise but helpful in your immediate response.`;
 
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',

@@ -19,6 +19,7 @@ export type Database = {
           created_at: string
           declared_by: string
           description: string | null
+          disaster_prompts: string | null
           emergency_type: string
           id: string
           is_active: boolean | null
@@ -34,6 +35,7 @@ export type Database = {
           created_at?: string
           declared_by: string
           description?: string | null
+          disaster_prompts?: string | null
           emergency_type: string
           id?: string
           is_active?: boolean | null
@@ -49,6 +51,7 @@ export type Database = {
           created_at?: string
           declared_by?: string
           description?: string | null
+          disaster_prompts?: string | null
           emergency_type?: string
           id?: string
           is_active?: boolean | null

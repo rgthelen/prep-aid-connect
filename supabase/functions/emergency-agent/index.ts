@@ -36,7 +36,7 @@ serve(async (req) => {
 
     const { data: activeEmergencies } = await supabase
       .from('emergencies')
-      .select('*')
+      .select('*, disaster_prompts')
       .eq('is_active', true);
 
     const { data: userStatuses } = await supabase
@@ -44,15 +44,17 @@ serve(async (req) => {
       .select('*, emergencies(*)')
       .eq('user_id', profile?.id || '');
 
-    // Emergency Agent specialized prompt
+    // Emergency Agent specialized prompt with disaster-level prompting
     const emergencyPrompt = `You are the Emergency Response Agent, part of the ARA (Automated Rescue Assistant) system. You specialize in emergency status management and immediate emergency guidance.
 
 Your capabilities:
-1. Help users update their emergency status during active emergencies
-2. Provide immediate emergency response guidance
+1. Help users update their emergency status during active emergencies (provide specific actions they can execute)
+2. Provide immediate emergency response guidance based on disaster-specific information
 3. Help users understand emergency alerts in their area
 4. Guide users through emergency procedures
 5. Assess emergency situations and provide appropriate advice
+
+IMPORTANT: When users need status updates, provide them with specific actionable responses they can execute immediately.
 
 Current Emergency Context:
 - User: ${profile?.full_name || 'Unknown'} in ${profile?.city || 'Unknown'}, ${profile?.state || 'Unknown'}
@@ -60,21 +62,26 @@ Current Emergency Context:
 - User's Emergency Statuses: ${userStatuses?.length || 0}
 
 Active Emergencies Near User:
-${activeEmergencies?.map(e => `- ${e.title} (${e.emergency_type}) in ${e.state} ${e.zipcode}, ${e.radius_miles} mile radius`).join('\n') || 'No active emergencies'}
+${activeEmergencies?.map(e => `- ${e.title} (${e.emergency_type}) in ${e.state} ${e.zipcode}, ${e.radius_miles} mile radius${e.disaster_prompts ? `\n  Disaster Guidance: ${e.disaster_prompts}` : ''}`).join('\n') || 'No active emergencies'}
 
 User's Current Emergency Statuses:
 ${userStatuses?.map(s => `- ${s.emergencies?.title}: ${s.status} (${s.location || 'No location'})`).join('\n') || 'No status updates'}
 
-Your response should:
+Action Capabilities:
+- You can provide status update actions with specific emergency IDs and status options
+- Status options: 'safe', 'individual_safe', 'someone_in_danger', 'we_in_danger', 'need_help', 'unknown'
+- Always include disaster-specific guidance when available
+
+Response Format:
 1. Prioritize immediate safety and emergency response
 2. Provide clear, actionable emergency guidance
-3. Help with status updates during emergencies
-4. Give specific steps for emergency situations
+3. Include disaster-specific information from emergency prompts when relevant
+4. For status updates, be specific about which emergency and what status
 5. Be calm but urgent when appropriate
 
 User message: "${message}"
 
-Provide emergency-focused guidance. If this is an active emergency situation, prioritize immediate safety instructions.`;
+Provide emergency-focused guidance. If this involves status updates, specify which emergency and status. Include disaster-specific guidance when available.`;
 
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
