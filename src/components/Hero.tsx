@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { AlertTriangle, Users, MapPin, Clock } from "lucide-react";
+import { Link } from "react-router-dom";
 import heroImage from "@/assets/hero-image.jpg";
 
 const Hero = () => {
@@ -24,14 +25,14 @@ const Hero = () => {
 
           {/* Headline */}
           <h1 className="text-responsive-xl font-bold text-foreground mb-6 leading-tight">
-            Save Lives with <span className="text-primary">PreRescue</span>
+            Emergency Preparedness with <span className="text-primary">AI-Powered</span>
             <br />
-            Emergency Preparedness Records
+            PreRescue Records & Response
           </h1>
 
           {/* Description */}
           <p className="text-responsive-lg text-muted-foreground mb-8 leading-relaxed">
-            Secure, standardized Personal Emergency Preparedness Records (PEPRs) that connect individuals with emergency services when it matters most. Prepare now, respond faster.
+            Create secure Personal Emergency Preparedness Records (PEPRs), get real-time emergency alerts, and receive AI-powered guidance during disasters. Your complete emergency preparedness platform.
           </p>
 
           {/* Stats */}
@@ -56,10 +57,10 @@ const Hero = () => {
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-4">
-            <Button size="xl" className="flex-1 sm:flex-none">
-              Create Your PEPR
+            <Button size="xl" className="flex-1 sm:flex-none" asChild>
+              <Link to="/auth">Create Your PEPR</Link>
             </Button>
-            <Button variant="outline" size="xl" className="flex-1 sm:flex-none">
+            <Button variant="outline" size="xl" className="flex-1 sm:flex-none" onClick={() => document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' })}>
               Learn More
             </Button>
           </div>
@@ -69,22 +70,22 @@ const Hero = () => {
             <div className="flex items-center gap-3">
               <Users className="h-8 w-8 text-primary" />
               <div>
-                <div className="font-semibold text-foreground">Family Tracking</div>
-                <div className="text-sm text-muted-foreground">Keep loved ones informed</div>
+                <div className="font-semibold text-foreground">AI Emergency Assistant</div>
+                <div className="text-sm text-muted-foreground">Chat with specialized AI agents</div>
               </div>
             </div>
             <div className="flex items-center gap-3">
               <MapPin className="h-8 w-8 text-primary" />
               <div>
-                <div className="font-semibold text-foreground">Smart Location</div>
-                <div className="text-sm text-muted-foreground">Global address engine</div>
+                <div className="font-semibold text-foreground">Emergency Mapping</div>
+                <div className="text-sm text-muted-foreground">Real-time emergency zones</div>
               </div>
             </div>
             <div className="flex items-center gap-3">
               <Clock className="h-8 w-8 text-primary" />
               <div>
-                <div className="font-semibold text-foreground">Real-time Updates</div>
-                <div className="text-sm text-muted-foreground">Instant status notifications</div>
+                <div className="font-semibold text-foreground">Live Status Updates</div>
+                <div className="text-sm text-muted-foreground">Report & track safety status</div>
               </div>
             </div>
           </div>

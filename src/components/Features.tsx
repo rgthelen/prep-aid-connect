@@ -15,52 +15,52 @@ import {
 const Features = () => {
   const currentFeatures = [
     {
+      icon: MessageSquare,
+      title: "AI Emergency Chat Assistant",
+      description: "Multi-agent AI system with specialized emergency, PEPR management, and preparedness advisors for comprehensive guidance."
+    },
+    {
       icon: Shield,
       title: "Personal Emergency Preparedness Records (PEPRs)",
-      description: "Secure, standardized emergency profiles with critical information accessible to first responders."
-    },
-    {
-      icon: Globe,
-      title: "Global Smart Address Engine",
-      description: "Intelligent location system that works across all countries and regions for precise emergency response."
-    },
-    {
-      icon: Smartphone,
-      title: "Mobile-Optimized Interface",
-      description: "Designed for emergency situations with intuitive mobile-first design for quick status updates."
-    },
-    {
-      icon: Database,
-      title: "Family & Pet Information",
-      description: "Comprehensive profiles including family members, pets, and special medical/mobility needs."
+      description: "Secure, standardized emergency profiles with critical information accessible to first responders and family members."
     },
     {
       icon: Clock,
-      title: "Real-Time Status Updates",
-      description: "Instant notifications and status updates during active emergencies in your area."
+      title: "Real-Time Emergency Alerts & Status",
+      description: "Instant emergency notifications and status updates during active disasters in your area with proximity-based alerts."
     },
     {
       icon: MapPin,
-      title: "Geofenced Emergency Zones",
-      description: "Administrators can create emergency zones by county, state, or custom map areas."
+      title: "Interactive Emergency Mapping",
+      description: "Live emergency zones with Mapbox integration showing affected areas, evacuation routes, and safe zones."
+    },
+    {
+      icon: Users,
+      title: "Family & Emergency Contacts",
+      description: "Comprehensive family member profiles with special needs, medications, and automated emergency contact notifications."
+    },
+    {
+      icon: Database,
+      title: "Admin Emergency Management",
+      description: "Administrative dashboard for declaring emergencies, managing disaster zones, and monitoring user safety statuses."
     }
   ];
 
   const comingFeatures = [
     {
-      icon: MessageSquare,
-      title: "AI Emergency Chat Assistant",
-      description: "Intelligent chat interface for gathering critical information during emergency situations."
-    },
-    {
-      icon: Zap,
-      title: "Smart Emergency Prompts",
-      description: "Dynamic, context-aware prompts tailored to specific disaster types and individual circumstances."
+      icon: Smartphone,
+      title: "Mobile Push Notifications",
+      description: "Native mobile app with GPS-based emergency alerts and offline functionality for remote areas."
     },
     {
       icon: Languages,
       title: "Multi-Language Support",
-      description: "Full platform and chat translation across 10+ languages for global emergency response."
+      description: "Full platform and AI chat translation across 10+ languages for global emergency response."
+    },
+    {
+      icon: Globe,
+      title: "Integration with Emergency Services",
+      description: "Direct integration with 911 dispatch systems and first responder databases for faster emergency response."
     }
   ];
 
