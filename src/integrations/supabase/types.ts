@@ -22,6 +22,8 @@ export type Database = {
           emergency_type: string
           id: string
           is_active: boolean | null
+          latitude: number | null
+          longitude: number | null
           radius_miles: number
           state: string
           title: string
@@ -35,6 +37,8 @@ export type Database = {
           emergency_type: string
           id?: string
           is_active?: boolean | null
+          latitude?: number | null
+          longitude?: number | null
           radius_miles?: number
           state: string
           title: string
@@ -48,6 +52,8 @@ export type Database = {
           emergency_type?: string
           id?: string
           is_active?: boolean | null
+          latitude?: number | null
+          longitude?: number | null
           radius_miles?: number
           state?: string
           title?: string
