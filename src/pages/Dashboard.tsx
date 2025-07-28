@@ -161,8 +161,8 @@ const Dashboard = () => {
       if (error) throw error;
 
       toast({
-        title: "Status Updated",
-        description: "Your emergency status has been updated successfully.",
+        title: t('dashboard.statusUpdated'),
+        description: t('dashboard.statusUpdatedDesc'),
       });
 
       // Refresh both emergencies and user statuses to show the updated status
@@ -170,8 +170,8 @@ const Dashboard = () => {
     } catch (error) {
       console.error('Error updating status:', error);
       toast({
-        title: "Error",
-        description: "Failed to update your status. Please try again.",
+        title: t('dashboard.errorTitle'),
+        description: t('dashboard.errorDesc'),
         variant: "destructive",
       });
     } finally {
@@ -196,12 +196,12 @@ const Dashboard = () => {
 
   const getStatusLabel = (status: string) => {
     switch (status) {
-      case 'safe': return 'We are SAFE';
-      case 'individual_safe': return 'I am SAFE';
-      case 'someone_in_danger': return 'Someone is in danger';
-      case 'we_in_danger': return 'We are in danger';
-      case 'need_help': return 'We need help';
-      default: return 'Status unknown';
+      case 'safe': return t('dashboard.statusOptions.safe');
+      case 'individual_safe': return t('dashboard.statusOptions.safe');
+      case 'someone_in_danger': return t('dashboard.statusOptions.needs_help');
+      case 'we_in_danger': return t('dashboard.statusOptions.needs_help');
+      case 'need_help': return t('dashboard.statusOptions.needs_help');
+      default: return t('dashboard.statusOptions.unknown');
     }
   };
 
@@ -214,7 +214,7 @@ const Dashboard = () => {
             <Shield className="h-8 w-8 text-primary" />
             <div className="flex flex-col">
               <span className="text-lg font-bold text-foreground">ARA PreRescue</span>
-              <span className="text-xs text-muted-foreground">Dashboard</span>
+              <span className="text-xs text-muted-foreground">{t('dashboard.signOut')}</span>
             </div>
           </div>
           
@@ -222,7 +222,7 @@ const Dashboard = () => {
             <LanguageSelector />
             <span className="text-sm text-muted-foreground">
               {t('dashboard.welcome')}, {profile?.full_name || profile?.email}
-              {profile?.is_admin && <span className="ml-2 px-2 py-1 bg-primary text-primary-foreground text-xs rounded">Admin</span>}
+              {profile?.is_admin && <span className="ml-2 px-2 py-1 bg-primary text-primary-foreground text-xs rounded">{t('dashboard.actions.adminPanel')}</span>}
             </span>
             <Button variant="outline" size="sm" onClick={signOut}>
               {t('dashboard.signOut')}
@@ -270,12 +270,12 @@ const Dashboard = () => {
                           </div>
                           {userStatus && (
                             <div className="mt-2 text-sm">
-                              <span className="font-medium">Your Status: </span>
+                              <span className="font-medium">{t('dashboard.yourStatusLabel')}</span>
                               <span className={getStatusColor(userStatus.status)}>
                                 {getStatusLabel(userStatus.status)}
                               </span>
                               <span className="text-muted-foreground ml-2">
-                                (Updated: {new Date(userStatus.updated_at).toLocaleString()})
+                                {t('dashboard.updatedLabel')}{new Date(userStatus.updated_at).toLocaleString()})
                               </span>
                             </div>
                           )}
@@ -314,16 +314,16 @@ const Dashboard = () => {
         </div>
 
         <div className="mb-8">
-          <h2 className="text-2xl font-bold text-foreground mb-2">Your Emergency Data</h2>
+          <h2 className="text-2xl font-bold text-foreground mb-2">{t('dashboard.emergencyData')}</h2>
           <p className="text-muted-foreground">
-            Quick overview of your PEPRs and emergency information.
+            {t('dashboard.emergencyDataDesc')}
           </p>
         </div>
 
         {/* Existing PEPRs Section */}
         {loading ? (
           <div className="mb-8">
-            <h2 className="text-xl font-semibold mb-4">Your PEPRs</h2>
+            <h2 className="text-xl font-semibold mb-4">{t('dashboard.yourPeprs')}</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {[1, 2, 3].map((i) => (
                 <Card key={i} className="animate-pulse">
@@ -343,7 +343,7 @@ const Dashboard = () => {
           <div className="mb-8">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-xl font-semibold">{t('dashboard.yourPeprs')}</h2>
-              <span className="text-sm text-muted-foreground">{peprs.length} record(s)</span>
+              <span className="text-sm text-muted-foreground">{peprs.length} {t('dashboard.record')}</span>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
               {peprs.map((pepr) => (
@@ -361,17 +361,17 @@ const Dashboard = () => {
                   <CardContent className="pt-0">
                     <div className="flex items-center gap-1 text-xs text-muted-foreground mb-3">
                       <Calendar className="h-3 w-3" />
-                      Created {new Date(pepr.created_at).toLocaleDateString()}
+                      {t('dashboard.created')} {new Date(pepr.created_at).toLocaleDateString()}
                     </div>
                     <div className="space-y-2">
                       <Link to={`/pepr/${pepr.id}`}>
                         <Button variant="outline" size="sm" className="w-full">
-                          View Details
+                          {t('dashboard.viewDetails')}
                         </Button>
                       </Link>
                       <Link to={`/edit-pepr/${pepr.id}`}>
                         <Button variant="ghost" size="sm" className="w-full text-xs">
-                          Edit PEPR
+                          {t('dashboard.editPepr')}
                         </Button>
                       </Link>
                     </div>
@@ -384,14 +384,14 @@ const Dashboard = () => {
           <div className="mb-8">
             <div className="text-center py-8 px-4 border-2 border-dashed border-border rounded-lg">
               <FileText className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-              <h3 className="text-lg font-medium mb-2">No PEPRs Yet</h3>
+              <h3 className="text-lg font-medium mb-2">{t('dashboard.noPeprsYet')}</h3>
               <p className="text-muted-foreground mb-4">
-                Create your first Personal Emergency Preparedness Record to get started.
+                {t('dashboard.createFirstDesc')}
               </p>
               <Link to="/create-pepr">
                 <Button>
                   <Plus className="h-4 w-4 mr-2" />
-                  Create Your First PEPR
+                  {t('dashboard.createFirst')}
                 </Button>
               </Link>
             </div>
@@ -403,21 +403,21 @@ const Dashboard = () => {
           {/* Create PEPR Card */}
           <Card className="hover:shadow-lg transition-shadow">
             <CardHeader>
-               <CardTitle className="flex items-center gap-2">
-                 <Plus className="h-5 w-5 text-primary" />
-                 {peprs.length > 0 ? 'Create Another PEPR' : 'Create PEPR'}
-               </CardTitle>
-               <CardDescription>
-                 {peprs.length > 0 
-                   ? 'Add a PEPR for travel, work, or secondary locations'
-                   : 'Set up your Personal Emergency Preparedness Record'
-                 }
-              </CardDescription>
+                 <CardTitle className="flex items-center gap-2">
+                  <Plus className="h-5 w-5 text-primary" />
+                  {peprs.length > 0 ? t('dashboard.createAnother') : t('dashboard.createPepr')}
+                </CardTitle>
+                <CardDescription>
+                  {peprs.length > 0 
+                    ? t('dashboard.createAnotherDesc')
+                    : t('dashboard.createPeprDesc')
+                  }
+               </CardDescription>
             </CardHeader>
             <CardContent>
               <Link to="/create-pepr">
                 <Button className="w-full">
-                  Get Started
+                  {t('dashboard.getStarted')}
                 </Button>
               </Link>
             </CardContent>
@@ -428,10 +428,10 @@ const Dashboard = () => {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Users className="h-5 w-5 text-primary" />
-                Family & Contacts
+                {t('dashboard.familyContacts')}
               </CardTitle>
               <CardDescription>
-                Manage your emergency contacts and family members
+                {t('dashboard.familyContactsDesc')}
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -440,7 +440,7 @@ const Dashboard = () => {
                 className="w-full"
                 onClick={() => setFamilyContactsOpen(true)}
               >
-                Manage Contacts
+                {t('dashboard.manageContacts')}
               </Button>
             </CardContent>
           </Card>
@@ -450,10 +450,10 @@ const Dashboard = () => {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <AlertTriangle className="h-5 w-5 text-amber-500" />
-                Emergency Status
+                {t('dashboard.emergencyStatus')}
               </CardTitle>
               <CardDescription>
-                Check active emergencies in your area
+                {t('dashboard.emergencyStatusDesc')}
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -462,7 +462,7 @@ const Dashboard = () => {
                 className="w-full"
                 onClick={() => setEmergencyStatusOpen(true)}
               >
-                Check Status
+                {t('dashboard.checkStatus')}
               </Button>
             </CardContent>
           </Card>
@@ -473,16 +473,16 @@ const Dashboard = () => {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Shield className="h-5 w-5 text-primary" />
-                  Admin Panel
+                  {t('dashboard.adminPanelTitle')}
                 </CardTitle>
                 <CardDescription>
-                  Manage users and declare emergencies
+                  {t('dashboard.adminPanelDesc')}
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <Link to="/admin">
                   <Button variant="emergency" className="w-full">
-                    Admin Dashboard
+                    {t('dashboard.accessAdmin')}
                   </Button>
                 </Link>
               </CardContent>

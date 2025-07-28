@@ -6,6 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { useTranslation } from 'react-i18next';
 import { MessageCircle, Send, Bot, User, Loader2, AlertTriangle, Shield, Users, Mic } from 'lucide-react';
 import VoiceInterface from './VoiceInterface';
 
@@ -31,6 +32,7 @@ interface AgentRouting {
 export const ProminentChatInterface = () => {
   const { profile } = useAuth();
   const { toast } = useToast();
+  const { i18n } = useTranslation();
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [inputMessage, setInputMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -154,6 +156,37 @@ export const ProminentChatInterface = () => {
     }
   };
 
+  const checkForLanguageInstructions = (message: string): string | null => {
+    const lowerMessage = message.toLowerCase();
+    const languageMap: { [key: string]: string } = {
+      'english': 'en',
+      'spanish': 'es',
+      'español': 'es',
+      'french': 'fr',
+      'français': 'fr',
+      'german': 'de',
+      'deutsch': 'de'
+    };
+
+    // Check if message contains language instruction
+    const languageInstruction = Object.keys(languageMap).find(lang => 
+      lowerMessage.includes(`respond in ${lang}`) || 
+      lowerMessage.includes(`answer in ${lang}`) ||
+      lowerMessage.includes(`use ${lang}`) ||
+      lowerMessage.includes(`in ${lang}`)
+    );
+
+    if (languageInstruction) {
+      const langCode = languageMap[languageInstruction];
+      // Change the UI language
+      i18n.changeLanguage(langCode);
+      
+      return `IMPORTANT: The user has requested responses in ${languageInstruction.toUpperCase()}. All your responses must be in ${languageInstruction.toUpperCase()} language. This is a critical instruction that overrides any other language settings.`;
+    }
+
+    return null;
+  };
+
   const callAgent = async (agentType: string, message: string) => {
     if (!profile) return;
 
@@ -185,6 +218,9 @@ export const ProminentChatInterface = () => {
     setInputMessage('');
     setIsLoading(true);
 
+    // Check for language setting commands
+    const languageInstructions = checkForLanguageInstructions(userMessage);
+    
     // Add user message
     addMessage(userMessage, 'user');
 
@@ -192,8 +228,12 @@ export const ProminentChatInterface = () => {
       // Call coordinator
       const coordinatorLoadingId = addLoadingMessage('coordinator');
       
+      const messageWithContext = languageInstructions ? 
+        `${languageInstructions}\n\nUser message: ${userMessage}` : 
+        userMessage;
+
       const { data: coordinatorData, error } = await supabase.functions.invoke('chat-coordinator', {
-        body: { message: userMessage, userId: profile.user_id }
+        body: { message: messageWithContext, userId: profile.user_id }
       });
 
       if (error) throw error;
