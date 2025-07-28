@@ -9,8 +9,11 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Shield, ArrowLeft } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import LanguageSelector from '@/components/LanguageSelector';
 
 const Auth = () => {
+  const { t } = useTranslation();
   const [isSignUp, setIsSignUp] = useState(false);
   const [isForgotPassword, setIsForgotPassword] = useState(false);
   const [isResetPassword, setIsResetPassword] = useState(false);
@@ -57,7 +60,7 @@ const Auth = () => {
     e.preventDefault();
     
     if (newPassword !== confirmPassword) {
-      setError('Passwords do not match');
+      setError(t('auth.messages.passwordMismatch'));
       return;
     }
 
@@ -130,26 +133,29 @@ const Auth = () => {
       <div className="min-h-screen bg-gradient-to-br from-background to-secondary/20 flex items-center justify-center p-4">
         <div className="w-full max-w-md">
           <div className="flex items-center justify-center mb-8">
-            <Link to="/" className="flex items-center gap-2 text-primary hover:text-primary/80 transition-colors">
-              <ArrowLeft className="h-4 w-4" />
-              <Shield className="h-8 w-8" />
-              <div className="flex flex-col">
-                <span className="text-lg font-bold">ARA PreRescue</span>
-              </div>
-            </Link>
+            <div className="flex items-center gap-4">
+              <Link to="/" className="flex items-center gap-2 text-primary hover:text-primary/80 transition-colors">
+                <ArrowLeft className="h-4 w-4" />
+                <Shield className="h-8 w-8" />
+                <div className="flex flex-col">
+                  <span className="text-lg font-bold">ARA PreRescue</span>
+                </div>
+              </Link>
+              <LanguageSelector />
+            </div>
           </div>
 
           <Card>
             <CardHeader className="text-center">
-              <CardTitle>Set New Password</CardTitle>
+              <CardTitle>{t('auth.setNewPassword')}</CardTitle>
               <CardDescription>
-                Enter your new password below
+                {t('auth.descriptions.setNewPassword')}
               </CardDescription>
             </CardHeader>
             <CardContent>
               <form onSubmit={handlePasswordUpdate} className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="newPassword">New Password</Label>
+                  <Label htmlFor="newPassword">{t('auth.newPassword')}</Label>
                   <Input
                     id="newPassword"
                     type="password"
@@ -162,7 +168,7 @@ const Auth = () => {
                 </div>
                 
                 <div className="space-y-2">
-                  <Label htmlFor="confirmPassword">Confirm New Password</Label>
+                  <Label htmlFor="confirmPassword">{t('auth.confirmPassword')}</Label>
                   <Input
                     id="confirmPassword"
                     type="password"
@@ -191,7 +197,7 @@ const Auth = () => {
                   className="w-full" 
                   disabled={loading}
                 >
-                  {loading ? 'Updating...' : 'Update Password'}
+                  {loading ? t('auth.updating') : t('auth.updatePassword')}
                 </Button>
               </form>
             </CardContent>

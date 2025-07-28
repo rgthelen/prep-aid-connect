@@ -11,6 +11,8 @@ import { FamilyContactsModal } from '@/components/FamilyContactsModal';
 import { EmergencyStatusModal } from '@/components/EmergencyStatusModal';
 import { ProminentChatInterface } from '@/components/ProminentChatInterface';
 import { useToast } from '@/hooks/use-toast';
+import { useTranslation } from 'react-i18next';
+import LanguageSelector from '@/components/LanguageSelector';
 
 interface PEPR {
   id: string;
@@ -46,6 +48,7 @@ interface UserEmergencyStatus {
 const Dashboard = () => {
   const { profile, signOut } = useAuth();
   const { toast } = useToast();
+  const { t } = useTranslation();
   const [peprs, setPeprs] = useState<PEPR[]>([]);
   const [loading, setLoading] = useState(true);
   const [familyContactsOpen, setFamilyContactsOpen] = useState(false);
@@ -216,12 +219,13 @@ const Dashboard = () => {
           </div>
           
           <div className="flex items-center gap-3">
+            <LanguageSelector />
             <span className="text-sm text-muted-foreground">
-              Welcome, {profile?.full_name || profile?.email}
+              {t('dashboard.welcome')}, {profile?.full_name || profile?.email}
               {profile?.is_admin && <span className="ml-2 px-2 py-1 bg-primary text-primary-foreground text-xs rounded">Admin</span>}
             </span>
             <Button variant="outline" size="sm" onClick={signOut}>
-              Sign Out
+              {t('dashboard.signOut')}
             </Button>
           </div>
         </div>
@@ -234,7 +238,7 @@ const Dashboard = () => {
           <div className="mb-8">
             <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
               <AlertTriangle className="h-5 w-5 text-red-500" />
-              Active Emergency Alerts
+              {t('dashboard.activeAlerts')}
             </h2>
             <div className="space-y-4">
               {activeEmergencies.map((emergency) => {
@@ -277,22 +281,21 @@ const Dashboard = () => {
                           )}
                         </div>
                         <div className="ml-4 min-w-[200px]">
-                          <label className="text-sm font-medium block mb-2">Update Status:</label>
+                          <label className="text-sm font-medium block mb-2">{t('dashboard.updateStatus')}:</label>
                           <Select
                             value={userStatus?.status || ''}
                             onValueChange={(value) => updateEmergencyStatus(emergency.id, value)}
                             disabled={updatingStatus === emergency.id}
                           >
                             <SelectTrigger className="w-full">
-                              <SelectValue placeholder="Select status" />
+                              <SelectValue placeholder={t('dashboard.updateStatus')} />
                             </SelectTrigger>
-                            <SelectContent>
-                              <SelectItem value="safe">We are SAFE</SelectItem>
-                              <SelectItem value="individual_safe">I am SAFE</SelectItem>
-                              <SelectItem value="someone_in_danger">Someone is in danger</SelectItem>
-                              <SelectItem value="we_in_danger">We are in danger</SelectItem>
-                              <SelectItem value="need_help">We need help</SelectItem>
-                              <SelectItem value="unknown">Status unknown</SelectItem>
+                            <SelectContent className="bg-card border border-border z-50">
+                              <SelectItem value="safe">{t('dashboard.statusOptions.safe')}</SelectItem>
+                              <SelectItem value="needs_help">{t('dashboard.statusOptions.needs_help')}</SelectItem>
+                              <SelectItem value="at_home">{t('dashboard.statusOptions.at_home')}</SelectItem>
+                              <SelectItem value="evacuated">{t('dashboard.statusOptions.evacuated')}</SelectItem>
+                              <SelectItem value="unknown">{t('dashboard.statusOptions.unknown')}</SelectItem>
                             </SelectContent>
                           </Select>
                         </div>
@@ -339,7 +342,7 @@ const Dashboard = () => {
         ) : peprs.length > 0 ? (
           <div className="mb-8">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-semibold">Your PEPRs</h2>
+              <h2 className="text-xl font-semibold">{t('dashboard.yourPeprs')}</h2>
               <span className="text-sm text-muted-foreground">{peprs.length} record(s)</span>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
@@ -395,7 +398,7 @@ const Dashboard = () => {
           </div>
         )}
 
-        <h2 className="text-xl font-semibold mb-4">Quick Actions</h2>
+        <h2 className="text-xl font-semibold mb-4">{t('dashboard.quickActions')}</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {/* Create PEPR Card */}
           <Card className="hover:shadow-lg transition-shadow">
