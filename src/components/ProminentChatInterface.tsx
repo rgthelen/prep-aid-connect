@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -6,7 +6,8 @@ import { Badge } from '@/components/ui/badge';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
-import { MessageCircle, Send, Bot, User, Loader2, AlertTriangle, Shield, Users } from 'lucide-react';
+import { MessageCircle, Send, Bot, User, Loader2, AlertTriangle, Shield, Users, Mic } from 'lucide-react';
+import VoiceInterface from './VoiceInterface';
 
 interface ChatMessage {
   id: string;
@@ -34,6 +35,7 @@ export const ProminentChatInterface = () => {
   const [inputMessage, setInputMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [activeAgents, setActiveAgents] = useState<string[]>([]);
+  const [showVoice, setShowVoice] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -227,6 +229,18 @@ export const ProminentChatInterface = () => {
     }
   };
 
+  const handleVoiceTranscript = useCallback((transcript: string) => {
+    console.log('Voice transcript received:', transcript);
+    // Add voice transcript as user message
+    addMessage(transcript, 'user');
+  }, []);
+
+  const handleVoiceAIResponse = useCallback((response: string) => {
+    console.log('Voice AI response received:', response);
+    // Add AI response from voice
+    addMessage(response, 'coordinator');
+  }, []);
+
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
@@ -267,24 +281,47 @@ export const ProminentChatInterface = () => {
   return (
     <Card className="w-full max-w-4xl mx-auto shadow-lg border-primary/20">
       <CardHeader className="pb-4 border-b bg-gradient-to-r from-primary/5 to-secondary/20">
-        <CardTitle className="flex items-center gap-3 text-xl">
-          <div className="p-2 bg-primary rounded-full">
-            <MessageCircle className="h-5 w-5 text-primary-foreground" />
-          </div>
-          ARA Emergency Assistant
-          {activeAgents.length > 0 && (
-            <div className="flex gap-1 ml-auto">
-              {activeAgents.map(agent => (
-                <Badge key={agent} variant="secondary" className="text-xs animate-pulse">
-                  {agent} working...
-                </Badge>
-              ))}
+        <div className="flex items-center justify-between">
+          <CardTitle className="flex items-center gap-3 text-xl">
+            <div className="p-2 bg-primary rounded-full">
+              <MessageCircle className="h-5 w-5 text-primary-foreground" />
             </div>
-          )}
-        </CardTitle>
+            ARA Emergency Assistant
+            {activeAgents.length > 0 && (
+              <div className="flex gap-1 ml-auto">
+                {activeAgents.map(agent => (
+                  <Badge key={agent} variant="secondary" className="text-xs animate-pulse">
+                    {agent} working...
+                  </Badge>
+                ))}
+              </div>
+            )}
+          </CardTitle>
+          <div className="flex items-center gap-2">
+            <Button
+              variant={showVoice ? "default" : "outline"}
+              size="sm"
+              onClick={() => setShowVoice(!showVoice)}
+              className="flex items-center gap-2"
+            >
+              <Mic className="h-4 w-4" />
+              {showVoice ? 'Hide Voice' : 'Voice Chat'}
+            </Button>
+          </div>
+        </div>
         <CardDescription className="text-base">
           Your intelligent emergency preparedness assistant with specialized agents for PEPR management, emergency response, and preparedness advice.
         </CardDescription>
+        
+        {/* Voice Interface */}
+        {showVoice && (
+          <div className="mt-4 p-4 bg-secondary/50 rounded-lg">
+            <VoiceInterface 
+              onTranscriptUpdate={handleVoiceTranscript}
+              onAIResponse={handleVoiceAIResponse}
+            />
+          </div>
+        )}
       </CardHeader>
 
       {/* Messages */}
