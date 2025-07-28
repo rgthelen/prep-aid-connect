@@ -1,0 +1,148 @@
+{
+  "header": {
+    "features": "Características",
+    "howItWorks": "Cómo Funciona",
+    "signIn": "Iniciar Sesión",
+    "createPEPR": "Crear PEPR"
+  },
+  "hero": {
+    "badge": "Preparación de Emergencias con IA",
+    "title": "Prepárate para Emergencias con Registros de Preparación de Emergencias Personales con IA",
+    "subtitle": "Crea planes de emergencia integrales, recibe alertas en tiempo real y obtén asistencia inteligente cuando más la necesites. Nuestro sistema de IA multi-agente asegura que siempre estés preparado.",
+    "createPEPR": "Crear Tu PEPR",
+    "learnMore": "Saber Más",
+    "stats": {
+      "monitoring": "Monitoreo 24/7",
+      "coverage": "Cobertura Global",
+      "secureData": "Datos Seguros",
+      "alerts": "Alertas Instantáneas"
+    },
+    "features": {
+      "aiAssistant": "Asistente de IA de Emergencia",
+      "aiAssistantDesc": "Obtén ayuda y orientación instantánea",
+      "emergencyMapping": "Mapeo de Emergencias",
+      "emergencyMappingDesc": "Visualización de peligros en tiempo real",
+      "liveUpdates": "Actualizaciones en Vivo",
+      "liveUpdatesDesc": "Mantén a la familia informada al instante"
+    }
+  },
+  "aiShowcase": {
+    "badge": "Sistema de IA Multi-Agente",
+    "title": "Impulsado por Agentes de IA Avanzados",
+    "subtitle": "Nuestro sistema inteligente usa agentes de IA especializados trabajando juntos para proporcionar asistencia integral de emergencia y orientación de preparación.",
+    "agents": {
+      "coordinator": {
+        "title": "Agente Coordinador",
+        "description": "Gestiona conversaciones y dirige solicitudes a agentes especializados"
+      },
+      "emergency": {
+        "title": "Agente de Respuesta de Emergencia",
+        "description": "Proporciona orientación inmediata de emergencia y asistencia en tiempo real"
+      },
+      "pepr": {
+        "title": "Agente de Gestión PEPR",
+        "description": "Ayuda a crear y gestionar Registros de Preparación de Emergencias Personales"
+      },
+      "advisor": {
+        "title": "Asesor de Preparación",
+        "description": "Ofrece recomendaciones personalizadas de preparación para emergencias"
+      }
+    },
+    "features": {
+      "voiceSupport": {
+        "title": "Soporte de Voz",
+        "subtitle": "Próximamente",
+        "description": "Interacción manos libres durante emergencias"
+      },
+      "realTimeChat": {
+        "title": "Chat en Tiempo Real",
+        "subtitle": "Disponible Ahora",
+        "description": "Asistencia instantánea de IA cuando la necesites"
+      },
+      "smartRouting": {
+        "title": "Enrutamiento Inteligente",
+        "subtitle": "Impulsado por IA",
+        "description": "Te conecta automáticamente con el especialista correcto"
+      }
+    }
+  },
+  "features": {
+    "title": "Todo lo que necesitas para la preparación de emergencias",
+    "subtitle": "Herramientas integrales y asistencia de IA para mantener a ti y tu familia seguros durante cualquier situación de emergencia.",
+    "items": {
+      "aiChat": {
+        "title": "Sistema de Chat de IA Multi-Agente",
+        "description": "Obtén ayuda instantánea de agentes de IA especializados entrenados para respuesta de emergencias, gestión PEPR y planificación de preparación."
+      },
+      "peprManagement": {
+        "title": "Registros de Preparación de Emergencias Personales",
+        "description": "Crea, gestiona y comparte planes detallados de emergencia con información de contacto, datos médicos y rutas de evacuación."
+      },
+      "realTimeAlerts": {
+        "title": "Alertas de Emergencia en Tiempo Real",
+        "description": "Recibe notificaciones instantáneas sobre emergencias en tu área con alertas basadas en ubicación y actualizaciones de estado."
+      },
+      "emergencyMapping": {
+        "title": "Mapas Interactivos de Emergencia",
+        "description": "Visualiza emergencias activas, rutas de evacuación y zonas seguras con tecnología de mapeo en tiempo real."
+      },
+      "statusTracking": {
+        "title": "Seguimiento del Estado Familiar",
+        "description": "Mantén un seguimiento del estado de seguridad de los miembros de la familia durante emergencias con actualizaciones instantáneas y notificaciones."
+      },
+      "adminDashboard": {
+        "title": "Panel de Gestión de Emergencias",
+        "description": "Herramientas administrativas integrales para coordinadores de emergencias para gestionar alertas, rastrear respuestas y coordinar recursos."
+      }
+    }
+  },
+  "dashboard": {
+    "welcome": "Bienvenido",
+    "signOut": "Cerrar Sesión",
+    "activeAlerts": "Alertas de Emergencia Activas",
+    "noAlerts": "No hay emergencias activas en tu área",
+    "updateStatus": "Actualizar Estado",
+    "yourPeprs": "Tus PEPRs",
+    "noPeprs": "Aún no has creado ningún PEPR. Crea tu primero para comenzar.",
+    "createFirst": "Crear Tu Primer PEPR",
+    "quickActions": "Acciones Rápidas",
+    "actions": {
+      "createPepr": "Crear Nuevo PEPR",
+      "manageContacts": "Gestionar Contactos de Emergencia",
+      "checkStatus": "Verificar Estado de Emergencia",
+      "adminPanel": "Panel de Administración"
+    }
+  },
+  "auth": {
+    "signIn": "Iniciar Sesión",
+    "signUp": "Registrarse",
+    "email": "Correo Electrónico",
+    "password": "Contraseña",
+    "signInButton": "Iniciar Sesión",
+    "signUpButton": "Registrarse",
+    "switchToSignUp": "¿No tienes cuenta? Regístrate",
+    "switchToSignIn": "¿Ya tienes cuenta? Inicia sesión"
+  },
+  "common": {
+    "loading": "Cargando...",
+    "error": "Error",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "edit": "Editar",
+    "delete": "Eliminar",
+    "close": "Cerrar",
+    "back": "Atrás",
+    "next": "Siguiente",
+    "submit": "Enviar",
+    "search": "Buscar",
+    "filter": "Filtrar",
+    "sort": "Ordenar",
+    "view": "Ver",
+    "download": "Descargar",
+    "upload": "Subir",
+    "refresh": "Actualizar",
+    "settings": "Configuración",
+    "help": "Ayuda",
+    "contact": "Contacto"
+  }
+}

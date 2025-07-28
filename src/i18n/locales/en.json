@@ -1,0 +1,148 @@
+{
+  "header": {
+    "features": "Features",
+    "howItWorks": "How It Works",
+    "signIn": "Sign In",
+    "createPEPR": "Create PEPR"
+  },
+  "hero": {
+    "badge": "AI-Powered Emergency Preparedness",
+    "title": "Prepare for Emergencies with AI-Powered Personal Emergency Preparedness Records",
+    "subtitle": "Create comprehensive emergency plans, get real-time alerts, and receive intelligent assistance when you need it most. Our multi-agent AI system ensures you're always prepared.",
+    "createPEPR": "Create Your PEPR",
+    "learnMore": "Learn More",
+    "stats": {
+      "monitoring": "24/7 Monitoring",
+      "coverage": "Global Coverage", 
+      "secureData": "Secure Data",
+      "alerts": "Instant Alerts"
+    },
+    "features": {
+      "aiAssistant": "AI Emergency Assistant",
+      "aiAssistantDesc": "Get instant help and guidance",
+      "emergencyMapping": "Emergency Mapping",
+      "emergencyMappingDesc": "Real-time hazard visualization",
+      "liveUpdates": "Live Status Updates",
+      "liveUpdatesDesc": "Keep family informed instantly"
+    }
+  },
+  "aiShowcase": {
+    "badge": "Multi-Agent AI System",
+    "title": "Powered by Advanced AI Agents",
+    "subtitle": "Our intelligent system uses specialized AI agents working together to provide comprehensive emergency assistance and preparedness guidance.",
+    "agents": {
+      "coordinator": {
+        "title": "Coordinator Agent",
+        "description": "Manages conversations and routes requests to specialized agents"
+      },
+      "emergency": {
+        "title": "Emergency Response Agent", 
+        "description": "Provides immediate emergency guidance and real-time assistance"
+      },
+      "pepr": {
+        "title": "PEPR Management Agent",
+        "description": "Helps create and manage Personal Emergency Preparedness Records"
+      },
+      "advisor": {
+        "title": "Preparedness Advisor",
+        "description": "Offers personalized emergency preparedness recommendations"
+      }
+    },
+    "features": {
+      "voiceSupport": {
+        "title": "Voice Support",
+        "subtitle": "Coming Soon",
+        "description": "Hands-free interaction during emergencies"
+      },
+      "realTimeChat": {
+        "title": "Real-time Chat",
+        "subtitle": "Available Now", 
+        "description": "Instant AI assistance when you need it"
+      },
+      "smartRouting": {
+        "title": "Smart Routing",
+        "subtitle": "AI-Powered",
+        "description": "Automatically connects you to the right specialist"
+      }
+    }
+  },
+  "features": {
+    "title": "Everything you need for emergency preparedness",
+    "subtitle": "Comprehensive tools and AI assistance to keep you and your family safe during any emergency situation.",
+    "items": {
+      "aiChat": {
+        "title": "Multi-Agent AI Chat System",
+        "description": "Get instant help from specialized AI agents trained for emergency response, PEPR management, and preparedness planning."
+      },
+      "peprManagement": {
+        "title": "Personal Emergency Preparedness Records", 
+        "description": "Create, manage, and share detailed emergency plans with contact information, medical data, and evacuation routes."
+      },
+      "realTimeAlerts": {
+        "title": "Real-Time Emergency Alerts",
+        "description": "Receive instant notifications about emergencies in your area with location-based alerts and status updates."
+      },
+      "emergencyMapping": {
+        "title": "Interactive Emergency Maps",
+        "description": "Visualize active emergencies, evacuation routes, and safe zones with real-time mapping technology."
+      },
+      "statusTracking": {
+        "title": "Family Status Tracking",
+        "description": "Keep track of family members' safety status during emergencies with instant updates and notifications."
+      },
+      "adminDashboard": {
+        "title": "Emergency Management Dashboard",
+        "description": "Comprehensive admin tools for emergency coordinators to manage alerts, track responses, and coordinate resources."
+      }
+    }
+  },
+  "dashboard": {
+    "welcome": "Welcome",
+    "signOut": "Sign Out",
+    "activeAlerts": "Active Emergency Alerts",
+    "noAlerts": "No active emergencies in your area",
+    "updateStatus": "Update Status",
+    "yourPeprs": "Your PEPRs",
+    "noPeprs": "You haven't created any PEPRs yet. Create your first one to get started.",
+    "createFirst": "Create Your First PEPR",
+    "quickActions": "Quick Actions",
+    "actions": {
+      "createPepr": "Create New PEPR",
+      "manageContacts": "Manage Emergency Contacts", 
+      "checkStatus": "Check Emergency Status",
+      "adminPanel": "Admin Panel"
+    }
+  },
+  "auth": {
+    "signIn": "Sign In",
+    "signUp": "Sign Up",
+    "email": "Email",
+    "password": "Password",
+    "signInButton": "Sign In",
+    "signUpButton": "Sign Up",
+    "switchToSignUp": "Don't have an account? Sign up",
+    "switchToSignIn": "Already have an account? Sign in"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "save": "Save",
+    "cancel": "Cancel",
+    "edit": "Edit",
+    "delete": "Delete",
+    "close": "Close",
+    "back": "Back",
+    "next": "Next",
+    "submit": "Submit",
+    "search": "Search",
+    "filter": "Filter",
+    "sort": "Sort",
+    "view": "View",
+    "download": "Download",
+    "upload": "Upload",
+    "refresh": "Refresh",
+    "settings": "Settings",
+    "help": "Help",
+    "contact": "Contact"
+  }
+}

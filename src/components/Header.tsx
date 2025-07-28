@@ -2,9 +2,12 @@ import { Button } from "@/components/ui/button";
 import { Shield, Menu } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import LanguageSelector from "./LanguageSelector";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { t } = useTranslation();
 
   return (
     <header className="bg-card border-b border-border sticky top-0 z-50">
@@ -21,36 +24,39 @@ const Header = () => {
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center gap-6">
           <a href="#features" className="text-muted-foreground hover:text-foreground transition-colors">
-            Features
+            {t('header.features')}
           </a>
           <a href="#features" className="text-muted-foreground hover:text-foreground transition-colors">
-            How It Works
+            {t('header.howItWorks')}
           </a>
         </nav>
 
-        {/* CTA Buttons */}
+        {/* Language Selector & CTA Buttons */}
         <div className="hidden md:flex items-center gap-3">
+          <LanguageSelector />
           <Link to="/auth">
             <Button variant="outline" size="sm">
-              Sign In
+              {t('header.signIn')}
             </Button>
           </Link>
           <Link to="/auth">
             <Button size="sm">
-              Create PEPR
+              {t('header.createPEPR')}
             </Button>
           </Link>
         </div>
 
         {/* Mobile Menu Toggle */}
-        <Button
-          variant="ghost"
-          size="icon"
-          className="md:hidden"
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
-        >
-          <Menu className="h-5 w-5" />
-        </Button>
+        <div className="md:hidden flex items-center gap-2">
+          <LanguageSelector />
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+          >
+            <Menu className="h-5 w-5" />
+          </Button>
+        </div>
       </div>
 
       {/* Mobile Menu */}
@@ -58,20 +64,20 @@ const Header = () => {
         <div className="md:hidden border-t border-border bg-card">
           <nav className="container mx-auto px-4 py-4 flex flex-col gap-4">
             <a href="#features" className="text-muted-foreground hover:text-foreground transition-colors">
-              Features
+              {t('header.features')}
             </a>
             <a href="#features" className="text-muted-foreground hover:text-foreground transition-colors">
-              How It Works
+              {t('header.howItWorks')}
             </a>
             <div className="flex flex-col gap-2 pt-2 border-t border-border">
               <Link to="/auth">
                 <Button variant="outline" size="sm" className="w-full">
-                  Sign In
+                  {t('header.signIn')}
                 </Button>
               </Link>
               <Link to="/auth">
                 <Button size="sm" className="w-full">
-                  Create PEPR
+                  {t('header.createPEPR')}
                 </Button>
               </Link>
             </div>

@@ -1,0 +1,148 @@
+{
+  "header": {
+    "features": "Fonctionnalités",
+    "howItWorks": "Comment Ça Marche",
+    "signIn": "Se Connecter",
+    "createPEPR": "Créer PEPR"
+  },
+  "hero": {
+    "badge": "Préparation d'Urgence Alimentée par IA",
+    "title": "Préparez-vous aux Urgences avec les Dossiers de Préparation d'Urgence Personnels Alimentés par IA",
+    "subtitle": "Créez des plans d'urgence complets, recevez des alertes en temps réel et obtenez une assistance intelligente quand vous en avez le plus besoin. Notre système IA multi-agents assure que vous soyez toujours préparé.",
+    "createPEPR": "Créer Votre PEPR",
+    "learnMore": "En Savoir Plus",
+    "stats": {
+      "monitoring": "Surveillance 24/7",
+      "coverage": "Couverture Mondiale",
+      "secureData": "Données Sécurisées",
+      "alerts": "Alertes Instantanées"
+    },
+    "features": {
+      "aiAssistant": "Assistant IA d'Urgence",
+      "aiAssistantDesc": "Obtenez une aide et des conseils instantanés",
+      "emergencyMapping": "Cartographie d'Urgence",
+      "emergencyMappingDesc": "Visualisation des dangers en temps réel",
+      "liveUpdates": "Mises à Jour en Direct",
+      "liveUpdatesDesc": "Tenez la famille informée instantanément"
+    }
+  },
+  "aiShowcase": {
+    "badge": "Système IA Multi-Agents",
+    "title": "Alimenté par des Agents IA Avancés",
+    "subtitle": "Notre système intelligent utilise des agents IA spécialisés travaillant ensemble pour fournir une assistance d'urgence complète et des conseils de préparation.",
+    "agents": {
+      "coordinator": {
+        "title": "Agent Coordinateur",
+        "description": "Gère les conversations et dirige les demandes vers des agents spécialisés"
+      },
+      "emergency": {
+        "title": "Agent de Réponse d'Urgence",
+        "description": "Fournit des conseils d'urgence immédiats et une assistance en temps réel"
+      },
+      "pepr": {
+        "title": "Agent de Gestion PEPR",
+        "description": "Aide à créer et gérer les Dossiers de Préparation d'Urgence Personnels"
+      },
+      "advisor": {
+        "title": "Conseiller en Préparation",
+        "description": "Offre des recommandations personnalisées de préparation d'urgence"
+      }
+    },
+    "features": {
+      "voiceSupport": {
+        "title": "Support Vocal",
+        "subtitle": "Bientôt Disponible",
+        "description": "Interaction mains libres pendant les urgences"
+      },
+      "realTimeChat": {
+        "title": "Chat en Temps Réel",
+        "subtitle": "Disponible Maintenant",
+        "description": "Assistance IA instantanée quand vous en avez besoin"
+      },
+      "smartRouting": {
+        "title": "Routage Intelligent",
+        "subtitle": "Alimenté par IA",
+        "description": "Vous connecte automatiquement au bon spécialiste"
+      }
+    }
+  },
+  "features": {
+    "title": "Tout ce dont vous avez besoin pour la préparation d'urgence",
+    "subtitle": "Outils complets et assistance IA pour vous et votre famille en sécurité pendant toute situation d'urgence.",
+    "items": {
+      "aiChat": {
+        "title": "Système de Chat IA Multi-Agents",
+        "description": "Obtenez une aide instantanée d'agents IA spécialisés formés pour la réponse d'urgence, la gestion PEPR et la planification de préparation."
+      },
+      "peprManagement": {
+        "title": "Dossiers de Préparation d'Urgence Personnels",
+        "description": "Créez, gérez et partagez des plans d'urgence détaillés avec informations de contact, données médicales et itinéraires d'évacuation."
+      },
+      "realTimeAlerts": {
+        "title": "Alertes d'Urgence en Temps Réel",
+        "description": "Recevez des notifications instantanées sur les urgences dans votre région avec des alertes basées sur la localisation et des mises à jour de statut."
+      },
+      "emergencyMapping": {
+        "title": "Cartes d'Urgence Interactives",
+        "description": "Visualisez les urgences actives, les itinéraires d'évacuation et les zones sûres avec la technologie de cartographie en temps réel."
+      },
+      "statusTracking": {
+        "title": "Suivi du Statut Familial",
+        "description": "Suivez le statut de sécurité des membres de la famille pendant les urgences avec des mises à jour instantanées et des notifications."
+      },
+      "adminDashboard": {
+        "title": "Tableau de Bord de Gestion d'Urgence",
+        "description": "Outils administratifs complets pour les coordinateurs d'urgence pour gérer les alertes, suivre les réponses et coordonner les ressources."
+      }
+    }
+  },
+  "dashboard": {
+    "welcome": "Bienvenue",
+    "signOut": "Se Déconnecter",
+    "activeAlerts": "Alertes d'Urgence Actives",
+    "noAlerts": "Aucune urgence active dans votre région",
+    "updateStatus": "Mettre à Jour le Statut",
+    "yourPeprs": "Vos PEPRs",
+    "noPeprs": "Vous n'avez encore créé aucun PEPR. Créez votre premier pour commencer.",
+    "createFirst": "Créer Votre Premier PEPR",
+    "quickActions": "Actions Rapides",
+    "actions": {
+      "createPepr": "Créer Nouveau PEPR",
+      "manageContacts": "Gérer les Contacts d'Urgence",
+      "checkStatus": "Vérifier le Statut d'Urgence",
+      "adminPanel": "Panneau d'Administration"
+    }
+  },
+  "auth": {
+    "signIn": "Se Connecter",
+    "signUp": "S'Inscrire",
+    "email": "Email",
+    "password": "Mot de Passe",
+    "signInButton": "Se Connecter",
+    "signUpButton": "S'Inscrire",
+    "switchToSignUp": "Pas de compte ? Inscrivez-vous",
+    "switchToSignIn": "Déjà un compte ? Connectez-vous"
+  },
+  "common": {
+    "loading": "Chargement...",
+    "error": "Erreur",
+    "save": "Sauvegarder",
+    "cancel": "Annuler",
+    "edit": "Modifier",
+    "delete": "Supprimer",
+    "close": "Fermer",
+    "back": "Retour",
+    "next": "Suivant",
+    "submit": "Soumettre",
+    "search": "Rechercher",
+    "filter": "Filtrer",
+    "sort": "Trier",
+    "view": "Voir",
+    "download": "Télécharger",
+    "upload": "Téléverser",
+    "refresh": "Actualiser",
+    "settings": "Paramètres",
+    "help": "Aide",
+    "contact": "Contact"
+  }
+}

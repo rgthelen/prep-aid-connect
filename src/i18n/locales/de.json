@@ -1,0 +1,148 @@
+{
+  "header": {
+    "features": "Funktionen",
+    "howItWorks": "Wie es Funktioniert",
+    "signIn": "Anmelden",
+    "createPEPR": "PEPR Erstellen"
+  },
+  "hero": {
+    "badge": "KI-gestützte Notfallvorsorge",
+    "title": "Bereiten Sie sich auf Notfälle mit KI-gestützten Persönlichen Notfallvorsorge-Aufzeichnungen vor",
+    "subtitle": "Erstellen Sie umfassende Notfallpläne, erhalten Sie Echtzeit-Warnungen und intelligente Unterstützung, wenn Sie sie am meisten brauchen. Unser Multi-Agenten-KI-System stellt sicher, dass Sie immer vorbereitet sind.",
+    "createPEPR": "Ihr PEPR Erstellen",
+    "learnMore": "Mehr Erfahren",
+    "stats": {
+      "monitoring": "24/7 Überwachung",
+      "coverage": "Globale Abdeckung",
+      "secureData": "Sichere Daten",
+      "alerts": "Sofortige Warnungen"
+    },
+    "features": {
+      "aiAssistant": "KI-Notfall-Assistent",
+      "aiAssistantDesc": "Sofortige Hilfe und Anleitung erhalten",
+      "emergencyMapping": "Notfall-Kartierung",
+      "emergencyMappingDesc": "Echtzeit-Gefahrenvisualisierung",
+      "liveUpdates": "Live-Status-Updates",
+      "liveUpdatesDesc": "Familie sofort informiert halten"
+    }
+  },
+  "aiShowcase": {
+    "badge": "Multi-Agenten-KI-System",
+    "title": "Angetrieben von Fortgeschrittenen KI-Agenten",
+    "subtitle": "Unser intelligentes System nutzt spezialisierte KI-Agenten, die zusammenarbeiten, um umfassende Nothilfe und Vorsorgeberatung zu bieten.",
+    "agents": {
+      "coordinator": {
+        "title": "Koordinator-Agent",
+        "description": "Verwaltet Gespräche und leitet Anfragen an spezialisierte Agenten weiter"
+      },
+      "emergency": {
+        "title": "Notfall-Reaktions-Agent",
+        "description": "Bietet sofortige Notfall-Anleitung und Echtzeit-Unterstützung"
+      },
+      "pepr": {
+        "title": "PEPR-Verwaltungs-Agent",
+        "description": "Hilft beim Erstellen und Verwalten von Persönlichen Notfallvorsorge-Aufzeichnungen"
+      },
+      "advisor": {
+        "title": "Vorsorge-Berater",
+        "description": "Bietet personalisierte Notfallvorsorge-Empfehlungen"
+      }
+    },
+    "features": {
+      "voiceSupport": {
+        "title": "Sprachunterstützung",
+        "subtitle": "Bald Verfügbar",
+        "description": "Freihändige Interaktion während Notfällen"
+      },
+      "realTimeChat": {
+        "title": "Echtzeit-Chat",
+        "subtitle": "Jetzt Verfügbar",
+        "description": "Sofortige KI-Unterstützung, wenn Sie sie brauchen"
+      },
+      "smartRouting": {
+        "title": "Intelligentes Routing",
+        "subtitle": "KI-gestützt",
+        "description": "Verbindet Sie automatisch mit dem richtigen Spezialisten"
+      }
+    }
+  },
+  "features": {
+    "title": "Alles was Sie für die Notfallvorsorge brauchen",
+    "subtitle": "Umfassende Werkzeuge und KI-Unterstützung, um Sie und Ihre Familie in jeder Notfallsituation sicher zu halten.",
+    "items": {
+      "aiChat": {
+        "title": "Multi-Agenten-KI-Chat-System",
+        "description": "Erhalten Sie sofortige Hilfe von spezialisierten KI-Agenten, die für Notfallreaktion, PEPR-Verwaltung und Vorsorgeplanung trainiert sind."
+      },
+      "peprManagement": {
+        "title": "Persönliche Notfallvorsorge-Aufzeichnungen",
+        "description": "Erstellen, verwalten und teilen Sie detaillierte Notfallpläne mit Kontaktinformationen, medizinischen Daten und Evakuierungsrouten."
+      },
+      "realTimeAlerts": {
+        "title": "Echtzeit-Notfall-Warnungen",
+        "description": "Erhalten Sie sofortige Benachrichtigungen über Notfälle in Ihrer Gegend mit standortbasierten Warnungen und Status-Updates."
+      },
+      "emergencyMapping": {
+        "title": "Interaktive Notfall-Karten",
+        "description": "Visualisieren Sie aktive Notfälle, Evakuierungsrouten und sichere Zonen mit Echtzeit-Kartentechnologie."
+      },
+      "statusTracking": {
+        "title": "Familien-Status-Verfolgung",
+        "description": "Verfolgen Sie den Sicherheitsstatus von Familienmitgliedern während Notfällen mit sofortigen Updates und Benachrichtigungen."
+      },
+      "adminDashboard": {
+        "title": "Notfall-Management-Dashboard",
+        "description": "Umfassende Verwaltungstools für Notfallkoordinatoren zur Verwaltung von Warnungen, Verfolgung von Reaktionen und Koordination von Ressourcen."
+      }
+    }
+  },
+  "dashboard": {
+    "welcome": "Willkommen",
+    "signOut": "Abmelden",
+    "activeAlerts": "Aktive Notfall-Warnungen",
+    "noAlerts": "Keine aktiven Notfälle in Ihrer Gegend",
+    "updateStatus": "Status Aktualisieren",
+    "yourPeprs": "Ihre PEPRs",
+    "noPeprs": "Sie haben noch keine PEPRs erstellt. Erstellen Sie Ihren ersten, um zu beginnen.",
+    "createFirst": "Ihren Ersten PEPR Erstellen",
+    "quickActions": "Schnelle Aktionen",
+    "actions": {
+      "createPepr": "Neuen PEPR Erstellen",
+      "manageContacts": "Notfallkontakte Verwalten",
+      "checkStatus": "Notfall-Status Prüfen",
+      "adminPanel": "Admin-Panel"
+    }
+  },
+  "auth": {
+    "signIn": "Anmelden",
+    "signUp": "Registrieren",
+    "email": "E-Mail",
+    "password": "Passwort",
+    "signInButton": "Anmelden",
+    "signUpButton": "Registrieren",
+    "switchToSignUp": "Kein Konto? Registrieren",
+    "switchToSignIn": "Bereits ein Konto? Anmelden"
+  },
+  "common": {
+    "loading": "Laden...",
+    "error": "Fehler",
+    "save": "Speichern",
+    "cancel": "Abbrechen",
+    "edit": "Bearbeiten",
+    "delete": "Löschen",
+    "close": "Schließen",
+    "back": "Zurück",
+    "next": "Weiter",
+    "submit": "Senden",
+    "search": "Suchen",
+    "filter": "Filtern",
+    "sort": "Sortieren",
+    "view": "Ansehen",
+    "download": "Herunterladen",
+    "upload": "Hochladen",
+    "refresh": "Aktualisieren",
+    "settings": "Einstellungen",
+    "help": "Hilfe",
+    "contact": "Kontakt"
+  }
+}
