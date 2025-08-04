@@ -1,0 +1,189 @@
+{
+  "hero": {
+    "badge": "Sicurezza Alimentata dall'IA",
+    "title": "Preparazione Intelligente per le Emergenze",
+    "subtitle": "ARA PreRescue utilizza l'IA per aiutarti a prepararti, rimanere informato e rimanere al sicuro durante le emergenze. Crea il tuo Registro di Preparazione di Emergenza Personale (PEPR) e accedi a supporto intelligente 24/7.",
+    "ctaPrimary": "Inizia Gratis",
+    "ctaSecondary": "Scopri le Funzionalità",
+    "stats": {
+      "response": "Tempo di Risposta alle Emergenze",
+      "responseValue": "< 30 sec",
+      "coverage": "Copertura di Emergenza",
+      "coverageValue": "24/7",
+      "success": "Tasso di Successo",
+      "successValue": "99.9%"
+    },
+    "features": {
+      "ai": {
+        "title": "Assistenza IA",
+        "description": "Ottieni supporto e consigli personalizzati per le emergenze"
+      },
+      "realtime": {
+        "title": "Aggiornamenti in Tempo Reale",
+        "description": "Ricevi informazioni istantanee su situazioni di emergenza locali"
+      },
+      "family": {
+        "title": "Sicurezza della Famiglia",
+        "description": "Tieni traccia e connetti con i tuoi cari durante le emergenze"
+      }
+    }
+  },
+  "features": {
+    "title": "Perché Scegliere ARA PreRescue?",
+    "subtitle": "Una piattaforma completa per la preparazione e risposta alle emergenze",
+    "current": "Funzionalità Principali",
+    "coming": "Prossimamente",
+    "inDevelopment": "In Sviluppo",
+    "list": {
+      "pepr": {
+        "title": "PEPR (Registro di Preparazione di Emergenza Personale)",
+        "description": "Crea e gestisci profili di emergenza dettagliati per te e la tua famiglia con informazioni mediche, contatti e piani di evacuazione."
+      },
+      "ai": {
+        "title": "Assistente IA Multi-Agente",
+        "description": "Accedi a assistenti IA specializzati per consigli di preparazione, supporto durante le emergenze e orientamento generale sulla sicurezza."
+      },
+      "voice": {
+        "title": "Interfaccia Vocale",
+        "description": "Interagisci con il sistema utilizzando comandi vocali per accesso rapido durante situazioni ad alto stress."
+      },
+      "realtime": {
+        "title": "Tracciamento in Tempo Reale",
+        "description": "Monitora situazioni di emergenza attive e ricevi aggiornamenti di stato istantanei per la tua zona."
+      },
+      "family": {
+        "title": "Coordinazione Familiare",
+        "description": "Gestisci e coordina con i membri della famiglia durante le emergenze con check-in di stato e comunicazione."
+      },
+      "multilingual": {
+        "title": "Supporto Multilingue",
+        "description": "Accedi al sistema nella tua lingua preferita con supporto per inglese, spagnolo, francese, tedesco e italiano."
+      },
+      "predictive": {
+        "title": "Analisi Predittiva",
+        "description": "IA avanzata per prevedere e preparare potenziali rischi di emergenza nella tua zona."
+      },
+      "iot": {
+        "title": "Integrazione IoT",
+        "description": "Connetti dispositivi intelligenti per il monitoraggio automatico e gli alert di emergenza."
+      },
+      "community": {
+        "title": "Rete di Risposta Comunitaria",
+        "description": "Connetti con i tuoi vicini e le risorse locali per supporto reciproco durante le emergenze."
+      }
+    }
+  },
+  "header": {
+    "features": "Funzionalità",
+    "howItWorks": "Come Funziona",
+    "signIn": "Accedi",
+    "createPepr": "Crea PEPR"
+  },
+  "footer": {
+    "tagline": "Preparazione Intelligente per le Emergenze Alimentata dall'IA",
+    "product": {
+      "title": "Prodotto",
+      "features": "Funzionalità",
+      "howItWorks": "Come Funziona",
+      "pricing": "Prezzi",
+      "security": "Sicurezza"
+    },
+    "company": {
+      "title": "Azienda",
+      "about": "Chi Siamo",
+      "blog": "Blog",
+      "careers": "Carriere",
+      "contact": "Contatti"
+    },
+    "support": {
+      "title": "Supporto",
+      "helpCenter": "Centro Assistenza",
+      "documentation": "Documentazione",
+      "community": "Comunità",
+      "status": "Stato del Sistema"
+    },
+    "legal": {
+      "title": "Legale",
+      "privacy": "Privacy",
+      "terms": "Termini",
+      "cookies": "Cookie",
+      "gdpr": "GDPR"
+    },
+    "rights": "Tutti i diritti riservati."
+  },
+  "auth": {
+    "signIn": "Accedi",
+    "signUp": "Registrati",
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Conferma Password",
+    "forgotPassword": "Password Dimenticata?",
+    "resetPassword": "Reimposta Password",
+    "newPassword": "Nuova Password",
+    "confirmNewPassword": "Conferma Nuova Password",
+    "sendResetEmail": "Invia Email di Reset",
+    "backToSignIn": "Torna al Login",
+    "dontHaveAccount": "Non hai un account?",
+    "alreadyHaveAccount": "Hai già un account?",
+    "resetPasswordSuccess": "Email di reset password inviata! Controlla la tua casella di posta.",
+    "passwordUpdated": "Password aggiornata con successo!",
+    "signUpSuccess": "Registrazione completata! Controlla la tua email per la verifica."
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "subtitle": "Gestisci le tue informazioni di emergenza e rimani aggiornato",
+    "activeEmergencies": "Emergenze Attive",
+    "noActiveEmergencies": "Nessuna emergenza attiva nella tua zona",
+    "myPeprs": "I Miei PEPR",
+    "quickActions": "Azioni Rapide",
+    "loading": "Caricamento...",
+    "createFirstPepr": "Crea il Tuo Primo PEPR",
+    "createFirstPeprDesc": "Inizia creando il tuo Registro di Preparazione di Emergenza Personale",
+    "createPepr": "Crea PEPR",
+    "manageFamilyContacts": "Gestisci Contatti Familiari",
+    "manageFamilyContactsDesc": "Aggiungi e gestisci i tuoi contatti di emergenza familiari",
+    "updateEmergencyStatus": "Aggiorna Stato di Emergenza",
+    "updateEmergencyStatusDesc": "Aggiorna il tuo stato durante situazioni di emergenza attive",
+    "adminPanel": "Pannello Admin",
+    "adminPanelDesc": "Gestisci emergenze e visualizza analisi del sistema",
+    "peprs": "PEPR",
+    "viewDetails": "Visualizza Dettagli",
+    "edit": "Modifica",
+    "signOut": "Disconnetti",
+    "emergencyStatus": {
+      "safe": "Al Sicuro",
+      "needHelp": "Ho Bisogno di Aiuto",
+      "evacuating": "Evacuando",
+      "sheltering": "Al Riparo",
+      "updateStatus": "Aggiorna Stato",
+      "lastUpdated": "Ultimo Aggiornamento"
+    }
+  },
+  "chat": {
+    "title": "Assistente IA Emergenze",
+    "placeholder": "Digita il tuo messaggio qui...",
+    "send": "Invia",
+    "listening": "In ascolto...",
+    "processing": "Elaborazione...",
+    "voiceMode": "Modalità Vocale",
+    "textMode": "Modalità Testo",
+    "agents": {
+      "coordinator": "Coordinatore",
+      "pepr": "Agente PEPR",
+      "emergency": "Agente Emergenze",
+      "advisor": "Consulente"
+    },
+    "actions": {
+      "updateStatus": "Aggiorna Stato",
+      "viewContacts": "Visualizza Contatti",
+      "createPepr": "Crea PEPR"
+    }
+  },
+  "admin": {
+    "title": "Pannello Amministratore",
+    "emergencies": "Gestione Emergenze",
+    "analytics": "Analytics",
+    "users": "Gestione Utenti",
+    "settings": "Impostazioni Sistema"
+  }
+}
