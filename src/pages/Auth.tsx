@@ -32,24 +32,39 @@ const Auth = () => {
   // Check if user is coming from password reset email
   useEffect(() => {
     const checkForPasswordReset = async () => {
-      // Check URL parameters first
-      const urlParams = new URLSearchParams(window.location.search);
-      const hashParams = new URLSearchParams(window.location.hash.substring(1));
-      
-      const type = urlParams.get('type') || hashParams.get('type');
-      const accessToken = urlParams.get('access_token') || hashParams.get('access_token');
-      
-      console.log('Password reset check:', { type, hasAccessToken: !!accessToken, url: window.location.href });
-      
-      if (type === 'recovery' && accessToken) {
-        console.log('Password reset detected');
-        setIsResetPassword(true);
+      try {
+        // Check URL parameters first
+        const urlParams = new URLSearchParams(window.location.search);
+        const hashParams = new URLSearchParams(window.location.hash.substring(1));
         
-        // Get session to get user email
-        const { data: { session } } = await supabase.auth.getSession();
-        if (session?.user?.email) {
-          setEmail(session.user.email);
+        const type = urlParams.get('type') || hashParams.get('type');
+        const accessToken = urlParams.get('access_token') || hashParams.get('access_token');
+        
+        console.log('Password reset check:', { type, hasAccessToken: !!accessToken, url: window.location.href });
+        
+        if (type === 'recovery' && accessToken) {
+          console.log('Password reset detected');
+          
+          // Verify the session first
+          const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+          
+          if (sessionError) {
+            console.error('Session error:', sessionError);
+            setError('Invalid reset link. Please request a new password reset.');
+            return;
+          }
+          
+          if (!session?.user) {
+            setError('Invalid reset link. Please request a new password reset.');
+            return;
+          }
+          
+          setIsResetPassword(true);
+          setEmail(session.user.email || '');
         }
+      } catch (err) {
+        console.error('Password reset check error:', err);
+        setError('Error processing reset link. Please try again.');
       }
     };
 
